@@ -218,6 +218,29 @@ button[data-tooltip]:hover::after {
     margin-top: 0.75rem;
 }
 
+/* Modern header styling - full-width white strip like footer */
+.app-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    margin-bottom: 1rem;
+    background-color: var(--bg-container);
+    width: 100%;
+    box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.app-header h1 {
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    font-weight: 500;
+    opacity: 0.85;
+}
+
 /* Centered footer */
 footer {
     text-align: center;
