@@ -3,23 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mermaid Flow Chart Editor</title>
+    <title>Simple Draw - Modern Diagram Editor</title>
     <link rel="stylesheet" href="src/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <div class="editor-panel">
-            <textarea id="mermaidInput" placeholder="Enter your Mermaid diagram code here..."></textarea>
-            <button id="renderBtn">Render</button>
+            <div class="input-container">
+                <textarea id="mermaidInput" placeholder="Enter your Mermaid diagram code here..."></textarea>
+                <div class="action-button">
+                    <button id="renderBtn" data-tooltip="Render"><i class="fas fa-play"></i></button>
+                </div>
+            </div>
         </div>
         <div class="preview-panel">
-            <div id="mermaidOutput"></div>
-            <div class="export-buttons">
-                <button id="exportSVG">Export SVG</button>
-                <button id="exportPNG">Export PNG</button>
+            <div class="output-container">
+                <div id="mermaidOutput"></div>
+                <div class="action-buttons">
+                    <button id="exportSVG" data-tooltip="Export SVG"><i class="fas fa-download"></i></button>
+                    <button id="exportPNG" data-tooltip="Export PNG"><i class="fas fa-file-image"></i></button>
+                </div>
             </div>
         </div>
     </div>
+    
+    <footer>
+        <p>Created with <i class="fas fa-heart" style="color: #ff6b6b;"></i> by Gargya Gokhale | Powered by <a href="https://mermaid.js.org/" target="_blank" rel="noopener noreferrer">Mermaid.js</a></p>
+    </footer>
     
     <!-- Load libraries from CDN -->
     <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
