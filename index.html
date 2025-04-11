@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mermaid Flow Chart Editor</title>
+    <link rel="stylesheet" href="src/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="editor-panel">
+            <textarea id="mermaidInput" placeholder="Enter your Mermaid diagram code here..."></textarea>
+            <button id="renderBtn">Render</button>
+        </div>
+        <div class="preview-panel">
+            <div id="mermaidOutput"></div>
+            <div class="export-buttons">
+                <button id="exportSVG">Export SVG</button>
+                <button id="exportPNG">Export PNG</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Load libraries from CDN -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    
+    <!-- Load app modules -->
+    <script type="module" src="src/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "simple-draw",
+  "version": "1.0.0",
+  "description": "A web-based diagram creation tool using Mermaid.js",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server"
+  },
+  "dependencies": {
+    "mermaid": "10.6.1",
+    "html2canvas": "1.4.1"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
