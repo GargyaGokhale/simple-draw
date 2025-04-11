@@ -34,7 +34,7 @@ export class ExportManager {
                 return;
             }
             
-            html2canvas(svg).then(canvas => {
+            window.html2canvas(svg).then(canvas => {
                 canvas.toBlob(blob => {
                     if (blob) {
                         this.downloadFile(blob, 'diagram.png');

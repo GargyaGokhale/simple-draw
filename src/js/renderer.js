@@ -2,7 +2,7 @@ export class Renderer {
     constructor() {
         this.outputDiv = document.getElementById('mermaidOutput');
         // Initialize Mermaid with safe configuration
-        mermaid.initialize({ 
+        window.mermaid.initialize({ 
             startOnLoad: false,
             theme: 'default',
             securityLevel: 'loose'
@@ -30,7 +30,7 @@ export class Renderer {
             const id = `mermaid-diagram-${Date.now()}`;
             
             // Render the diagram
-            const { svg } = await mermaid.render(id, content);
+            const { svg } = await window.mermaid.render(id, content);
             this.outputDiv.innerHTML = svg;
             
             console.log('Diagram rendered successfully');
