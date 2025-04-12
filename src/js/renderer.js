@@ -94,67 +94,37 @@ export class Renderer {
         // Create control container
         const controls = document.createElement('div');
         controls.id = 'zoom-controls';
-        controls.style.position = 'absolute';
-        controls.style.top = '10px';
-        controls.style.right = '10px';
-        controls.style.backgroundColor = 'rgba(255, 255, 255, 0.85)';
-        controls.style.padding = '5px';
-        controls.style.borderRadius = '5px';
-        controls.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
-        controls.style.zIndex = '100';
-        controls.style.display = 'flex';
-        controls.style.gap = '5px';
         
-        // Create zoom in button
+        // Create zoom in button with magnifying glass plus icon
         const zoomInBtn = document.createElement('button');
-        zoomInBtn.innerHTML = '+';
+        zoomInBtn.innerHTML = '<i class="fas fa-search-plus"></i>';
         zoomInBtn.title = 'Zoom In';
-        zoomInBtn.style.width = '30px';
-        zoomInBtn.style.height = '30px';
-        zoomInBtn.style.cursor = 'pointer';
-        zoomInBtn.style.fontSize = '18px';
-        zoomInBtn.style.fontWeight = 'bold';
-        zoomInBtn.style.border = '1px solid #ccc';
-        zoomInBtn.style.borderRadius = '3px';
+        zoomInBtn.className = 'zoom-control-btn';
         zoomInBtn.addEventListener('click', () => this.zoomIn());
         
-        // Create zoom out button
+        // Create zoom out button with magnifying glass minus icon
         const zoomOutBtn = document.createElement('button');
-        zoomOutBtn.innerHTML = '-';
+        zoomOutBtn.innerHTML = '<i class="fas fa-search-minus"></i>';
         zoomOutBtn.title = 'Zoom Out';
-        zoomOutBtn.style.width = '30px';
-        zoomOutBtn.style.height = '30px';
-        zoomOutBtn.style.cursor = 'pointer';
-        zoomOutBtn.style.fontSize = '18px';
-        zoomOutBtn.style.fontWeight = 'bold';
-        zoomOutBtn.style.border = '1px solid #ccc';
-        zoomOutBtn.style.borderRadius = '3px';
+        zoomOutBtn.className = 'zoom-control-btn';
         zoomOutBtn.addEventListener('click', () => this.zoomOut());
         
         // Create reset button
         const resetBtn = document.createElement('button');
-        resetBtn.innerHTML = '↺';
+        resetBtn.innerHTML = '<i class="fas fa-redo-alt"></i>';
         resetBtn.title = 'Reset Zoom';
-        resetBtn.style.width = '30px';
-        resetBtn.style.height = '30px';
-        resetBtn.style.cursor = 'pointer';
-        resetBtn.style.fontSize = '18px';
-        resetBtn.style.border = '1px solid #ccc';
-        resetBtn.style.borderRadius = '3px';
+        resetBtn.className = 'zoom-control-btn';
         resetBtn.addEventListener('click', () => this.resetZoom());
         
         // Create pan toggle button
         const panBtn = document.createElement('button');
-        panBtn.innerHTML = '✋';
+        panBtn.innerHTML = '<i class="fas fa-hand-paper"></i>';
         panBtn.title = 'Toggle Pan';
         panBtn.id = 'toggle-pan';
-        panBtn.style.width = '30px';
-        panBtn.style.height = '30px';
-        panBtn.style.cursor = 'pointer';
-        panBtn.style.fontSize = '16px';
-        panBtn.style.border = '1px solid #ccc';
-        panBtn.style.borderRadius = '3px';
-        panBtn.style.backgroundColor = this.panEnabled ? '#ccc' : '';
+        panBtn.className = 'zoom-control-btn';
+        if (this.panEnabled) {
+            panBtn.classList.add('active');
+        }
         panBtn.addEventListener('click', () => this.togglePan());
         
         // Add buttons to container
@@ -281,7 +251,11 @@ export class Renderer {
         
         const panBtn = document.getElementById('toggle-pan');
         if (panBtn) {
-            panBtn.style.backgroundColor = this.panEnabled ? '#ccc' : '';
+            if (this.panEnabled) {
+                panBtn.classList.add('active');
+            } else {
+                panBtn.classList.remove('active');
+            }
         }
         
         const svgElement = this.outputDiv.querySelector('svg');
