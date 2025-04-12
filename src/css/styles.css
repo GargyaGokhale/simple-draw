@@ -313,6 +313,90 @@ footer {
     color: var(--text-light);
 }
 
+/* Code snippet styles for examples */
+.examples-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.snippet {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background-color: var(--bg-light);
+}
+
+.snippet-header {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.snippet-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.code-container {
+    position: relative;
+    background-color: #f6f8fa;
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: #f1f3f5;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.85rem;
+    color: #6a737d;
+}
+
+.code-block {
+    margin: 0;
+    padding: 1rem;
+    background-color: #f6f8fa;
+    overflow-x: auto;
+    font-family: 'Fira Code', monospace;
+}
+
+.example-code {
+    display: block;
+    white-space: pre;
+    color: #24292e;
+}
+
+.copy-btn {
+    background: none;
+    border: none;
+    color: #6a737d;
+    cursor: pointer;
+    padding: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.copy-btn:hover {
+    color: var(--primary);
+}
+
+.use-btn {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.use-btn:hover {
+    background-color: var(--primary-hover);
+}
+
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
