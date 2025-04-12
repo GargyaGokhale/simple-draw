@@ -19,6 +19,12 @@ export class Renderer {
         this.translateX = 0;
         this.translateY = 0;
         this.setupEventListeners();
+        this.isMobileView = window.innerWidth <= 768; // Check if in mobile view
+        
+        // Update isMobileView on resize
+        window.addEventListener('resize', () => {
+            this.isMobileView = window.innerWidth <= 768;
+        });
     }
 
     setupEventListeners() {
@@ -62,6 +68,11 @@ export class Renderer {
             // After rendering, initialize pan and zoom
             this.addZoomControlsToDOM();
             this.setupZoomAndPan();
+            
+            // Add scroll indicator for mobile view
+            if (this.isMobileView) {
+                this.addScrollIndicator();
+            }
         } catch (error) {
             console.error('Mermaid rendering error:', error);
             
@@ -262,5 +273,32 @@ export class Renderer {
         if (svgElement) {
             svgElement.style.cursor = this.panEnabled ? 'grab' : 'default';
         }
+    }
+
+    addScrollIndicator() {
+        // Remove any existing indicator
+        const existingIndicator = document.querySelector('.scroll-indicator');
+        if (existingIndicator) {
+            existingIndicator.remove();
+        }
+        
+        // Create scroll indicator
+        const indicator = document.createElement('div');
+        indicator.className = 'scroll-indicator';
+        indicator.innerHTML = '<i class="fas fa-arrows-alt-v"></i>';
+        
+        // Append to output container
+        this.outputDiv.appendChild(indicator);
+        
+        // Fade out after 5 seconds
+        setTimeout(() => {
+            indicator.classList.add('fade');
+            // Remove from DOM after animation completes
+            setTimeout(() => {
+                if (indicator.parentNode) {
+                    indicator.parentNode.removeChild(indicator);
+                }
+            }, 1000);
+        }, 5000);
     }
 }

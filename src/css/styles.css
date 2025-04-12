@@ -52,6 +52,7 @@ body {
     padding: 1.5rem;
     background-color: var(--bg-container);
     overflow: hidden;
+    min-height: 600px; /* Explicit minimum height */
 }
 
 .info-icon {
@@ -114,28 +115,31 @@ body {
     border-right: none;
 }
 
-/* Updated container styles for VS Code-like overlay buttons */
+/* Simplified container styles with direct height values */
 .input-container, .output-container {
     position: relative;
     width: 100%;
-    height: calc(100% - 60px);
+    height: 600px; /* Explicit height in pixels */
     border-radius: var(--radius-md);
     overflow: hidden;
 }
 
-#mermaidInput {
+#mermaidInput, #mermaidOutput {
     width: 100%;
-    height: 100%;
+    height: 100%; /* Take full height of parent */
     padding: 1rem;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
+    background-color: var(--bg-light);
+}
+
+#mermaidInput {
     resize: none;
     font-family: 'Fira Code', 'Consolas', monospace;
     font-size: 14px;
-    background-color: var(--bg-light);
     color: var(--text-dark);
-    transition: border-color 0.2s ease;
     line-height: 1.5;
+    min-height: 580px; /* Explicit minimum height */
 }
 
 #mermaidInput:focus {
@@ -145,20 +149,23 @@ body {
 }
 
 #mermaidOutput {
-    width: 100%;
-    height: 100%;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
     overflow: auto;
-    background-color: var(--bg-light);
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 0.2s ease;
 }
 
 #mermaidOutput:hover {
     box-shadow: var(--shadow-sm);
+}
+
+/* Ensure the SVG can expand to its full size and be scrollable */
+#mermaidOutput svg {
+    width: auto !important;
+    height: auto !important;
+    margin: 0 auto;
+    display: block;
+    max-width: 100%; /* Default constraint for desktop */
 }
 
 /* VS Code-like Action Buttons */
@@ -440,18 +447,219 @@ footer {
     color: white;
 }
 
+/* Improved Mobile Responsiveness */
 @media (max-width: 768px) {
-    .container {
-        flex-direction: column;
+    body {
+        overflow-y: auto;
         height: auto;
+        padding: 0;
     }
-
-    .editor-panel {
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
+    
+    .container {
+        flex-direction: column; /* Stack for mobile */
+        height: auto;
+        overflow: visible;  
+        padding: 10px;
+        gap: 10px;
     }
 
     .editor-panel, .preview-panel {
+        height: auto;
         min-height: 400px;
+        padding: 10px;
+    }
+
+    .input-container, .output-container {
+        height: 400px; /* Fixed height for mobile */
+        min-height: 400px;
+    }
+
+    #mermaidInput, #mermaidOutput {
+        height: 100%;
+        min-height: 380px;
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    #mermaidOutput {
+        overflow: auto !important; /* Force scrolling capability */
+        display: block;
+        padding: 15px;
+        position: relative;
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    }
+
+    /* Apply scaling only for mobile */
+    #mermaidOutput svg {
+        transform: scale(0.8); 
+        transform-origin: top center;
+        max-width: none !important; /* Remove width constraint on mobile */
+    }
+
+    /* Improve action buttons visibility */
+    .action-buttons {
+        bottom: 15px;
+        right: 15px;
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 25px;
+        padding: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        display: flex;
+        gap: 15px;
+        position: fixed;
+    }
+
+    .action-button {
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .action-buttons button, 
+    .action-button button {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, background-color 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .action-buttons button:hover, 
+    .action-button button:hover {
+        transform: scale(1.05);
+    }
+
+    .action-buttons button i, 
+    .action-button button i {
+        font-size: 18px;
+    }
+
+    /* Zoom controls for mobile */
+    #zoom-controls {
+        top: 10px;
+        right: 10px;
+        padding: 8px;
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+    }
+
+    .zoom-control-btn {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/* Ensure proper desktop view */
+@media (min-width: 769px) {
+    .container {
+        display: flex;
+        flex-direction: row; /* Side-by-side for desktop */
+    }
+    
+    .editor-panel, .preview-panel {
+        flex: 1; /* Equal width columns */
+        min-height: 600px;
+        overflow: hidden; /* No scroll for desktop */
+    }
+    
+    #mermaidOutput svg {
+        max-width: 100%; /* Maintain width constraint for desktop */
+        transform: none; /* No scaling for desktop */
+    }
+    
+    .input-container, .output-container {
+        height: 600px; /* Fixed height for desktop */
+    }
+    
+    #mermaidInput, #mermaidOutput {
+        height: 100%;
+        min-height: 580px;
+    }
+    
+    /* Ensure editor has enough space */
+    .input-container, .output-container {
+        height: calc(100% - 5px); /* Consistent height for desktop */
+    }
+}
+
+/* Added scroll indicator styles */
+.scroll-indicator {
+    display: none;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--primary);
+    animation: bounce 1.5s infinite;
+    z-index: 100;
+    font-size: 24px;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px 10px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    opacity: 0.7;
+    pointer-events: none; /* Don't interfere with scrolling */
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) translateX(-50%);
+    }
+    40% {
+        transform: translateY(-10px) translateX(-50%);
+    }
+    60% {
+        transform: translateY(-5px) translateX(-50%);
+    }
+}
+
+@media (max-width: 768px) {
+    .scroll-indicator {
+        display: block;
+    }
+    
+    /* Show for 5 seconds then fade out */
+    .scroll-indicator.fade {
+        animation: fadeOut 1s forwards;
+    }
+    
+    @keyframes fadeOut {
+        to {
+            opacity: 0;
+            visibility: hidden;
+        }
+    }
+}
+
+/* Ensure buttons are always visible */
+.action-button button, 
+.action-buttons button {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+    .app-header h1 {
+        font-size: 1.1rem;
+        padding: 0 10px;
+    }
+    
+    .editor-panel, .preview-panel {
+        height: 65vh; /* Slightly reduced from mobile but still substantial */
+        min-height: 350px; /* Increased from 250px to 350px */
+    }
+    
+    button[data-tooltip]::after {
+        display: none; /* Hide tooltips on very small screens */
+    }
+    
+    footer {
+        font-size: 0.7rem;
+        padding: 8px 10px;
     }
 }
