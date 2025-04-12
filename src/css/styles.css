@@ -301,12 +301,16 @@ button[data-tooltip]:hover::after {
 }
 
 .app-header h1 {
-    font-size: 1.5rem;
+    font-size: clamp(1rem, 2vw, 1.5rem); /* Responsive font size */
     color: var(--text-dark);
     text-transform: uppercase;
     letter-spacing: 0.05rem;
     font-weight: 500;
     opacity: 0.85;
+    white-space: nowrap; /* Keep title on one line */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add ellipsis if it needs to truncate */
+    max-width: 100%; /* Ensure it doesn't overflow container */
 }
 
 /* Centered footer */
@@ -551,6 +555,11 @@ footer {
         width: 36px;
         height: 36px;
     }
+
+    .app-header h1 {
+        font-size: clamp(0.9rem, 4vw, 1.2rem);
+        padding: 0 10px;
+    }
 }
 
 /* Ensure proper desktop view */
@@ -645,8 +654,8 @@ footer {
 /* Very small screens */
 @media (max-width: 480px) {
     .app-header h1 {
-        font-size: 1.1rem;
-        padding: 0 10px;
+        font-size: 0.9rem;
+        padding: 0 5px;
     }
     
     .editor-panel, .preview-panel {
