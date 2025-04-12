@@ -30,8 +30,14 @@ export class Editor {
     }
 
     sanitizeInput(input) {
-        const div = document.createElement('div');
-        div.innerText = input;
+        return input.replace(/[<>&"]/g, (char) => {
+            switch (char) {
+                case '<': return '&lt;';
+                case '&': return '&amp;';
+                case '"': return '&quot;';
+                default: return char;
+            }
+        });
         return div.innerHTML; // Escapes potentially harmful characters
     }
 }
