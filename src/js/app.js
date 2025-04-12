@@ -28,6 +28,11 @@ class App {
 
 // Initialize the application when DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM content loaded');
-    new App();
+    try {
+        console.log('DOM content loaded');
+        new App();
+    } catch (error) {
+        console.error('Error initializing the application:', error);
+        alert('An error occurred while starting the application.');
+    }
 });

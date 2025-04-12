@@ -7,20 +7,31 @@ export class Editor {
 
     setupEventListeners() {
         this.renderBtn.addEventListener('click', () => {
-            console.log('Render button clicked');
-            const content = this.getDiagramContent();
-            const event = new CustomEvent('diagram-update', {
-                detail: { content }
-            });
-            document.dispatchEvent(event);
+            try {
+                console.log('Render button clicked');
+                const content = this.sanitizeInput(this.getDiagramContent());
+                const event = new CustomEvent('diagram-update', {
+                    detail: { content }
+                });
+                document.dispatchEvent(event);
+            } catch (error) {
+                console.error('Error processing diagram content:', error);
+                alert('An error occurred while processing your input.');
+            }
         });
     }
 
     getDiagramContent() {
-        return this.textarea.value;
+        return this.textarea.value.trim();
     }
 
     setContent(content) {
         this.textarea.value = content;
+    }
+
+    sanitizeInput(input) {
+        const div = document.createElement('div');
+        div.innerText = input;
+        return div.innerHTML; // Escapes potentially harmful characters
     }
 }

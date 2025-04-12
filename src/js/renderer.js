@@ -5,7 +5,7 @@ export class Renderer {
         window.mermaid.initialize({ 
             startOnLoad: false,
             theme: 'default',
-            securityLevel: 'loose'
+            securityLevel: 'strict'
         });
         this.setupEventListeners();
     }
@@ -30,7 +30,8 @@ export class Renderer {
             const id = `mermaid-diagram-${Date.now()}`;
             
             // Render the diagram
-            const { svg } = await window.mermaid.render(id, content);
+            const sanitizedContent = this.sanitizeInput(content);
+            const { svg } = await window.mermaid.render(id, sanitizedContent);
             this.outputDiv.innerHTML = svg;
             
             console.log('Diagram rendered successfully');
@@ -38,5 +39,11 @@ export class Renderer {
             console.error('Mermaid rendering error:', error);
             this.outputDiv.innerHTML = `<p style="color: red;">Error rendering diagram: ${error.message}</p>`;
         }
+    }
+    
+    sanitizeInput(input) {
+        const div = document.createElement('div');
+        div.innerText = input;
+        return div.innerHTML; // Escapes potentially harmful characters
     }
 }

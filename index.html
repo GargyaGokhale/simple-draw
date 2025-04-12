@@ -38,8 +38,11 @@
     </footer>
     
     <!-- Load libraries from CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script>
+        const basePath = window.location.hostname === 'gargyagokhale.github.io' ? '/simple-draw/' : '/';
+        document.write(`<link rel="stylesheet" href="${basePath}src/css/styles.css">`);
+        document.write(`<script type="module" src="${basePath}src/js/app.js"><\/script>`);
+    </script>
     
     <!-- Load app modules -->
     <script type="module" src="src/js/app.js"></script>
