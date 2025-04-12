@@ -1,7 +1,9 @@
 // Function to fetch and render examples from examples.txt
 async function loadExamples() {
     try {
-        const response = await fetch('examples.txt');
+        // Get base path for correct fetching on GitHub Pages
+        const basePath = window.location.hostname === 'gargyagokhale.github.io' ? '/simple-draw/' : '/';
+        const response = await fetch(`${basePath}examples.txt`);
         const text = await response.text();
         console.log('Fetched examples.txt content');
 

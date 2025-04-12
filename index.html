@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Draw</title>
-    <link rel="stylesheet" href="src/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code&display=swap" rel="stylesheet">
+    <script>
+        // Set base path for assets based on deployment environment
+        const basePath = window.location.hostname === 'gargyagokhale.github.io' ? '/simple-draw/' : '/';
+        document.write(`<link rel="stylesheet" href="${basePath}src/css/styles.css">`);
+    </script>
 </head>
 <body>
     <header class="app-header">
@@ -40,14 +44,14 @@
     
     <!-- Load libraries from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.4.0/mermaid.min.js"></script>
-    <script>
-        const basePath = window.location.hostname === 'gargyagokhale.github.io' ? '/simple-draw/' : '/';
-        document.write(`<link rel="stylesheet" href="${basePath}src/css/styles.css">`);
-        document.write(`<script type="module" src="${basePath}src/js/app.js"><\/script>`);
-    </script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     
     <!-- Load app modules -->
-    <script type="module" src="src/js/loadExamples.js"></script>
-    <script type="module" src="src/js/app.js"></script>
+    <script>
+        // Use the same base path logic for JavaScript modules
+        const scriptBasePath = window.location.hostname === 'gargyagokhale.github.io' ? '/simple-draw/' : '/';
+        document.write(`<script type="module" src="${scriptBasePath}src/js/app.js"><\/script>`);
+        document.write(`<script type="module" src="${scriptBasePath}src/js/loadExamples.js"><\/script>`);
+    </script>
 </body>
 </html>
