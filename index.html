@@ -18,6 +18,7 @@
             <div class="input-container">
                 <textarea id="mermaidInput" placeholder="Enter your Mermaid diagram code here..."></textarea>
                 <div class="action-button">
+                    <button id="infoBtn" class="button" data-tooltip="Examples"><i class="fas fa-info-circle"></i></button>
                     <button id="renderBtn" data-tooltip="Render"><i class="fas fa-play"></i></button>
                 </div>
             </div>
@@ -34,14 +35,19 @@
     </div>
     
     <footer>
-        <p>Created by Gargya Gokhale | Powered by <a href="https://mermaid.js.org/" target="_blank" rel="noopener noreferrer">Mermaid.js</a></p>
+        <p>Created by Gargya Gokhale | Powered by <a href="https://mermaid.js.org/" target="_blank" rel="noopener noreferrer">Mermaid.js</a> | <a href="https://github.com/gargyagokhale/simple-draw" target="_blank" rel="noopener noreferrer">View on GitHub</a></p>
     </footer>
     
     <!-- Load libraries from CDN -->
-    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.4.0/mermaid.min.js"></script>
+    <script>
+        const basePath = window.location.hostname === 'gargyagokhale.github.io' ? '/simple-draw/' : '/';
+        document.write(`<link rel="stylesheet" href="${basePath}src/css/styles.css">`);
+        document.write(`<script type="module" src="${basePath}src/js/app.js"><\/script>`);
+    </script>
     
     <!-- Load app modules -->
+    <script type="module" src="src/js/loadExamples.js"></script>
     <script type="module" src="src/js/app.js"></script>
 </body>
 </html>

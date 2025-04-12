@@ -17,7 +17,11 @@ export class ExportManager {
                 alert('No diagram to export! Please render a diagram first.');
                 return;
             }
-            const svgData = new XMLSerializer().serializeToString(svg);
+            const svgData = this.sanitizeSVG(new XMLSerializer().serializeToString(svg));
+            if (!svgData) {
+                alert('Invalid SVG content. Export aborted.');
+                return;
+            }
             const blob = new Blob([svgData], { type: 'image/svg+xml' });
             this.downloadFile(blob, 'diagram.svg');
         } catch (error) {
@@ -34,12 +38,12 @@ export class ExportManager {
                 return;
             }
             
-            html2canvas(svg).then(canvas => {
+            window.html2canvas(svg).then(canvas => {
                 canvas.toBlob(blob => {
                     if (blob) {
                         this.downloadFile(blob, 'diagram.png');
                     } else {
-                        throw new Error('Failed to create PNG blob');
+                        alert('Failed to create PNG file. Please try again.');
                     }
                 });
             }).catch(error => {
@@ -61,5 +65,14 @@ export class ExportManager {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+    }
+    
+    sanitizeSVG(svgContent) {
+        // Basic sanitization to remove potentially harmful elements
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(svgContent, 'image/svg+xml');
+        const scripts = doc.querySelectorAll('script');
+        scripts.forEach(script => script.remove());
+        return new XMLSerializer().serializeToString(doc);
     }
 }
