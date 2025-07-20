@@ -36,25 +36,84 @@ export class ThemeManager {
     }
 
     createThemeSelector() {
-        const header = document.querySelector('.app-header');
-        const themeSelector = document.createElement('div');
-        themeSelector.className = 'theme-selector';
-        themeSelector.innerHTML = `
-            <label for="themeSelect">Theme:</label>
-            <select id="themeSelect">
-                ${Object.entries(this.themes).map(([key, theme]) => 
-                    `<option value="${key}" ${key === this.currentTheme ? 'selected' : ''}>${theme.name}</option>`
-                ).join('')}
-            </select>
-        `;
-        header.appendChild(themeSelector);
+        // Theme selector will be added to zoom controls, not as separate element
+        // This will be called from the renderer when zoom controls are created
+    }
+
+    // Create theme button for zoom controls tray
+    createThemeButton() {
+        const themeBtn = document.createElement('button');
+        themeBtn.innerHTML = '<i class="fas fa-palette"></i>';
+        themeBtn.title = 'Change Theme';
+        themeBtn.id = 'theme-selector-btn';
+        themeBtn.className = 'zoom-control-btn';
+        
+        // Create theme options popup
+        const themeOptions = document.createElement('div');
+        themeOptions.className = 'theme-options-popup hidden';
+        themeOptions.id = 'theme-options-popup';
+        
+        Object.entries(this.themes).forEach(([key, theme]) => {
+            const themeOption = document.createElement('div');
+            themeOption.className = `theme-option ${key === this.currentTheme ? 'active' : ''}`;
+            themeOption.setAttribute('data-theme', key);
+            themeOption.setAttribute('data-tooltip', theme.name);
+            this.updateThemeOption(themeOption, key);
+            themeOptions.appendChild(themeOption);
+        });
+        
+        // Add popup to button (will be positioned relative to button)
+        themeBtn.appendChild(themeOptions);
+        
+        // Add event listeners
+        this.setupThemeButtonListeners(themeBtn);
+        
+        return themeBtn;
+    }
+
+    updateThemeOption(option, themeKey) {
+        switch(themeKey) {
+            case 'default':
+                option.style.background = 'linear-gradient(45deg, #6c63ff 50%, #a855f7 50%)';
+                break;
+            case 'dark':
+                option.style.background = 'linear-gradient(45deg, #000000 50%, #ffffff 50%)';
+                break;
+            case 'custom':
+                option.style.background = 'linear-gradient(45deg, #2563eb 50%, #f97316 50%)';
+                break;
+        }
+    }
+
+    setupThemeButtonListeners(themeBtn) {
+        const themeOptions = themeBtn.querySelector('.theme-options-popup');
+        
+        // Toggle theme options on click
+        themeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            themeOptions.classList.toggle('hidden');
+        });
+
+        // Handle theme option clicks
+        const optionElements = themeOptions.querySelectorAll('.theme-option');
+        optionElements.forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const themeKey = option.getAttribute('data-theme');
+                this.switchTheme(themeKey);
+                themeOptions.classList.add('hidden');
+            });
+        });
+
+        // Close theme options when clicking outside
+        document.addEventListener('click', () => {
+            themeOptions.classList.add('hidden');
+        });
     }
 
     setupEventListeners() {
-        const themeSelect = document.getElementById('themeSelect');
-        themeSelect.addEventListener('change', (e) => {
-            this.switchTheme(e.target.value);
-        });
+        // Event listeners are now handled in setupThemeButtonListeners
+        // Called when theme button is created in zoom controls
     }
 
     switchTheme(themeKey) {
@@ -62,6 +121,15 @@ export class ThemeManager {
         
         this.currentTheme = themeKey;
         this.applyTheme(themeKey);
+
+        // Update active state of theme options
+        const themeOptions = document.querySelectorAll('.theme-option');
+        themeOptions.forEach(option => {
+            option.classList.remove('active');
+            if (option.getAttribute('data-theme') === themeKey) {
+                option.classList.add('active');
+            }
+        });
         
         // Save to localStorage
         localStorage.setItem('mermaid-theme', themeKey);

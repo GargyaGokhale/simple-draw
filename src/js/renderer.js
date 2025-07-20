@@ -146,6 +146,12 @@ export class Renderer {
         controls.appendChild(resetBtn);
         controls.appendChild(panBtn);
         
+        // Add theme selector button if theme manager is available
+        if (window.app && window.app.themeManager) {
+            const themeBtn = window.app.themeManager.createThemeButton();
+            controls.appendChild(themeBtn);
+        }
+        
         // Add controls to the diagram container
         this.outputDiv.style.position = 'relative';
         this.outputDiv.appendChild(controls);

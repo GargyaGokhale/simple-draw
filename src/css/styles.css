@@ -316,43 +316,102 @@ button[data-tooltip]:hover::after {
     max-width: 100%; /* Ensure it doesn't overflow container */
 }
 
-/* Theme Selector */
+/* Theme Selector - Old dropdown styles (remove) */
 .theme-selector {
+    display: none; /* Hide old dropdown selector */
+}
+
+/* Theme Options Popup - attached to zoom controls */
+#theme-selector-btn {
+    position: relative; /* Ensure popup positions relative to this button */
+}
+
+.theme-options-popup {
     position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
+    top: calc(100% + 8px); /* Position below the theme button */
+    right: 0;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 0.5rem;
+    background: #ffffff;
+    padding: 0.75rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    min-width: 120px;
+    transition: all 0.2s ease;
+    z-index: 1000;
 }
 
-.theme-selector label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--text-light);
-    white-space: nowrap;
+.theme-options-popup.hidden {
+    display: none;
 }
 
-.theme-selector select {
-    padding: 0.25rem 0.5rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    background-color: var(--bg-container);
-    color: var(--text-dark);
-    font-size: 0.875rem;
+.theme-option {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: border-color 0.2s;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    position: relative;
 }
 
-.theme-selector select:hover {
-    border-color: var(--primary);
+.theme-option:hover {
+    transform: scale(1.05);
+    border-color: #6c63ff;
 }
 
-.theme-selector select:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.1);
+.theme-option.active {
+    border-color: #6c63ff;
+    box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+}
+
+.theme-option::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.theme-option.active::after {
+    opacity: 1;
+}
+
+/* Tooltips for theme elements */
+.theme-option[data-tooltip]::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 120%; /* Position above the option */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--text-dark);
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    z-index: 30;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transform-origin: bottom;
+    transform: translateX(-50%) scale(0.8);
+    visibility: hidden;
+}
+
+.theme-option[data-tooltip]:hover::before {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+    visibility: visible;
 }
 
 /* Centered footer */
@@ -715,7 +774,7 @@ footer {
     }
     
     /* Hide theme selector on very small screens to save space */
-    .theme-selector {
+    #theme-selector-btn {
         display: none;
     }
 }
@@ -755,10 +814,9 @@ footer {
 
 /* Responsive theme adjustments */
 @media (max-width: 768px) {
-    .theme-selector {
-        position: static;
-        transform: none;
-        margin-top: 0.5rem;
+    .theme-options-popup {
+        top: calc(100% + 5px);
+        right: -10px;
     }
     
     .app-header {
