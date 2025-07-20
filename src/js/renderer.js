@@ -5,9 +5,12 @@ export class Renderer {
         window.mermaid.initialize({
             startOnLoad: false,
             theme: 'default',
-            securityLevel: 'strict',
+            securityLevel: 'loose', // Changed from 'strict' to support subgraphs
             logLevel: 'debug', // Enable detailed logging
-            flowchart: { htmlLabels: true } // Ensure flowchart diagrams render correctly
+            flowchart: { 
+                htmlLabels: true, // Ensure flowchart diagrams render correctly
+                subGraphTitleMargin: { top: 0, bottom: 0 } // Better subgraph rendering
+            }
         });
         
         // Override Mermaid's default error handling
@@ -45,9 +48,12 @@ export class Renderer {
             window.mermaid.initialize({ // Reinitialize Mermaid to reset its state
                 startOnLoad: false,
                 theme: 'default',
-                securityLevel: 'strict',
+                securityLevel: 'loose', // Changed from 'strict' to support subgraphs
                 logLevel: 'debug',
-                flowchart: { htmlLabels: true }
+                flowchart: { 
+                    htmlLabels: true,
+                    subGraphTitleMargin: { top: 0, bottom: 0 } // Better subgraph rendering
+                }
             });
             const footer = document.querySelector('footer');
             if (footer && footer.innerHTML.includes('syntax error')) {
@@ -80,7 +86,7 @@ export class Renderer {
             const errorDivs = document.querySelectorAll('div[id^="dmermaid-diagram"]');
             errorDivs.forEach((div) => div.remove());
             
-            this.outputDiv.innerHTML = `<p style="color: red;">Error rendering diagram: Please check your syntax and try again.</p>`;
+            this.outputDiv.innerHTML = `<p style="color: red;">Error rendering diagram: ${error.message || 'Please check your syntax and try again.'}</p>`;
         }
     }
     

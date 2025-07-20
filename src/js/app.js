@@ -9,12 +9,30 @@ class App {
         this.renderer = new Renderer();
         this.exportManager = new ExportManager();
 
-        // Set initial example diagram
+        // Set initial example diagram with subgraphs
         const exampleDiagram = `graph TD
-    A[Start] --> B{Is it working?}
-    B -->|Yes| C[Great!]
-    B -->|No| D[Debug]
-    D --> B`;
+    A[Start] --> B{Check User}
+    B -->|Valid| C[Process Request]
+    B -->|Invalid| D[Return Error]
+    
+    subgraph auth[Authentication]
+        E[Verify Token]
+        F[Check Permissions]
+        E --> F
+    end
+    
+    subgraph processing[Data Processing]
+        G[Parse Data]
+        H[Transform]
+        I[Save Result]
+        G --> H
+        H --> I
+    end
+    
+    C --> E
+    F --> G
+    I --> J[Success Response]
+    D --> K[Error Response]`;
         
         this.editor.setContent(exampleDiagram);
         

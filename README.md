@@ -5,10 +5,11 @@ A web-based diagram creation tool that leverages the Mermaid.js library to creat
 ## Features
 
 - Real-time diagram rendering
+- Support for all Mermaid diagram types including subgraphs
 - Export diagrams as SVG or PNG
 - User-friendly interface with split-view layout
 - Responsive design for both desktop and mobile
-- Example diagram template included
+- Example diagram templates including subgraph examples
 
 ## Getting Started
 

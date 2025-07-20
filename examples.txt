@@ -24,22 +24,168 @@ sequenceDiagram
     System-->>User: Welcome Message
 ```
 
-## Complex Flowchart
+## Complex Flowchart with Subgraphs
 ```mermaid
 graph TB
     A[Start] --> B{Is data valid?}
     B -->|Yes| C[Process Data]
     B -->|No| D[Show Error]
-    C --> E{Data Type?}
-    E -->|Numbers| F[Calculate Average]
-    E -->|Text| G[Format Text]
-    E -->|Date| H[Sort by Date]
-    F --> I[Display Results]
-    G --> I
-    H --> I
-    D --> J[Request New Data]
-    J --> B
-    I --> K[End]
+    
+    subgraph validation[Data Validation]
+        E[Check Format]
+        F[Verify Content] 
+        G[Validate Schema]
+        E --> F
+        F --> G
+    end
+    
+    subgraph processing[Data Processing]
+        H[Parse Data]
+        I[Transform Data]
+        J[Save to Database]
+        H --> I
+        I --> J
+    end
+    
+    C --> E
+    G --> H
+    J --> K[Display Results]
+    D --> L[Request New Data]
+    L --> A
+    K --> M[End]
+```
+
+## Simple Subgraph Example
+```mermaid
+graph TD
+    A[User Input] --> B[Validation]
+    
+    subgraph auth[Authentication]
+        C[Check Credentials]
+        D[Verify Token]
+        C --> D
+    end
+    
+    B --> C
+    D --> E[Access Granted]
+```
+
+## Nested Workflow with Subgraphs
+```mermaid
+graph LR
+    Start --> Login
+    
+    subgraph frontend[Frontend Processing]
+        Login --> Validate
+        Validate --> Dashboard
+    end
+    
+    subgraph backend[Backend Services]
+        API[API Gateway]
+        Auth[Auth Service]
+        DB[(Database)]
+        API --> Auth
+        Auth --> DB
+    end
+    
+    Dashboard --> API
+    DB --> Response[API Response]
+    Response --> Display[Display Data]
+```
+
+## Basic Subgraph Example
+```mermaid
+graph TD
+    A[Start] --> B[Main Process]
+    
+    subgraph "Authentication"
+        C[Login]
+        D[Validate]
+        C --> D
+    end
+    
+    subgraph "Data Processing"
+        E[Parse]
+        F[Transform]
+        G[Store]
+        E --> F
+        F --> G
+    end
+    
+    B --> C
+    D --> E
+    G --> H[End]
+```
+
+## Advanced Subgraph with Styling
+```mermaid
+graph TB
+    A[User Request] --> B{Authenticated?}
+    B -->|No| C[Login Required]
+    B -->|Yes| D[Process Request]
+    
+    subgraph "User Management"
+        direction TB
+        E[Check Session]
+        F[Validate Permissions]
+        G[Load Profile]
+        E --> F
+        F --> G
+    end
+    
+    subgraph "Business Logic"
+        direction LR
+        H[Validate Input]
+        I[Apply Rules]
+        J[Generate Output]
+        H --> I
+        I --> J
+    end
+    
+    subgraph "Data Layer"
+        K[Database Query]
+        L[Cache Check]
+        M[Data Transform]
+        L --> K
+        K --> M
+    end
+    
+    D --> E
+    G --> H
+    J --> K
+    M --> N[Send Response]
+    C --> N
+    N --> O[End]
+```
+
+## Nested Subgraphs
+```mermaid
+graph TD
+    A[Start] --> B[Main Flow]
+    
+    subgraph "System A"
+        direction TB
+        C[Component 1]
+        
+        subgraph "Subsystem A1"
+            D[Process A]
+            E[Process B]
+            D --> E
+        end
+        
+        C --> D
+        E --> F[Output A]
+    end
+    
+    subgraph "System B"
+        G[Component 2]
+        H[Component 3]
+        G --> H
+    end
+    
+    B --> C
+    F --> G
+    H --> I[End]
 ```
 
 ## Tips
