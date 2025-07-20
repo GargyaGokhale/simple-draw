@@ -167,12 +167,17 @@ export class ThemeManager {
                     mainBkg: '#ffffff',
                     secondBkg: '#ffffff',
                     primaryColor: '#2563eb', // Blue
-                    primaryTextColor: '#ffffff',
+                    primaryTextColor: '#000000', // Black text for better contrast
                     primaryBorderColor: '#1d4ed8',
                     lineColor: '#f97316', // Orange
                     sectionBkgColor: '#dbeafe', // Light blue
                     altSectionBkgColor: '#fed7aa', // Light orange
                     gridColor: '#e5e7eb',
+                    // Text colors for different elements
+                    nodeBkg: '#ffffff',
+                    nodeTextColor: '#000000',
+                    textColor: '#000000',
+                    labelTextColor: '#000000',
                     c0: '#2563eb', // Blue
                     c1: '#f97316', // Orange
                     c2: '#10b981', // Emerald
@@ -192,6 +197,11 @@ export class ThemeManager {
                     sectionBkgColor: '#f8f9fa',
                     altSectionBkgColor: '#e9ecef',
                     gridColor: '#dee2e6',
+                    // Text colors for different elements
+                    nodeBkg: '#ffffff',
+                    nodeTextColor: '#000000',
+                    textColor: '#000000',
+                    labelTextColor: '#000000',
                     c0: '#ffffff',
                     c1: '#f8f9fa',
                     c2: '#e9ecef',
@@ -203,7 +213,9 @@ export class ThemeManager {
                     // Ensure white background for default theme too
                     background: '#ffffff',
                     mainBkg: '#ffffff',
-                    secondBkg: '#ffffff'
+                    secondBkg: '#ffffff',
+                    textColor: '#000000',
+                    labelTextColor: '#000000'
                 };
         }
     }
