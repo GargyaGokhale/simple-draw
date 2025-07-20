@@ -42,7 +42,7 @@
 ### App (app.js)
 - Main application entry point
 - Initializes Editor, Renderer, and ExportManager components
-- Sets up initial example diagram
+- Sets up initial example diagram with subgraph demonstration
 - Handles DOM content loaded event
 
 ### Editor (editor.js)
@@ -55,11 +55,12 @@
 
 ### Renderer (renderer.js)
 - Handles diagram rendering using Mermaid.js
+- **Subgraph Support**: Configured with `securityLevel: 'loose'` for subgraph rendering
 - Methods:
   - `setupEventListeners()`: Listens for diagram-update events
-  - `renderDiagram(content)`: Renders Mermaid code to SVG
+  - `renderDiagram(content)`: Renders Mermaid code including subgraphs to SVG
   - `getCurrentSVG()`: Returns current rendered SVG
-- Includes error handling for invalid diagram code
+- Includes error handling for invalid diagram code and subgraph syntax
 
 ### ExportManager (exportManager.js)
 - Manages diagram export functionality
