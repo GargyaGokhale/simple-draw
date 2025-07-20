@@ -298,6 +298,7 @@ button[data-tooltip]:hover::after {
     width: 100%;
     box-shadow: var(--shadow-sm);
     border-bottom: 1px solid var(--border-color);
+    position: relative;
 }
 
 .app-header h1 {
@@ -311,6 +312,45 @@ button[data-tooltip]:hover::after {
     overflow: hidden;
     text-overflow: ellipsis; /* Add ellipsis if it needs to truncate */
     max-width: 100%; /* Ensure it doesn't overflow container */
+}
+
+/* Theme Selector */
+.theme-selector {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.theme-selector label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-light);
+    white-space: nowrap;
+}
+
+.theme-selector select {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background-color: var(--bg-container);
+    color: var(--text-dark);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.theme-selector select:hover {
+    border-color: var(--primary);
+}
+
+.theme-selector select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.1);
 }
 
 /* Centered footer */
@@ -670,5 +710,49 @@ footer {
     footer {
         font-size: 0.7rem;
         padding: 8px 10px;
+    }
+    
+    /* Hide theme selector on very small screens to save space */
+    .theme-selector {
+        display: none;
+    }
+}
+
+/* Theme Styles - Applied only to Mermaid output */
+
+/* Default theme uses Mermaid's default styling */
+
+/* Dark/Black and White theme */
+#mermaidOutput.theme-dark {
+    background-color: #ffffff !important;
+}
+
+#mermaidOutput.theme-dark svg {
+    background-color: #ffffff !important;
+}
+
+/* Custom Blue-Orange theme */
+#mermaidOutput.theme-custom {
+    background: linear-gradient(135deg, #dbeafe 0%, #fed7aa 100%) !important;
+    border: 2px solid #f97316;
+    border-radius: var(--radius-md);
+    padding: 1rem;
+}
+
+#mermaidOutput.theme-custom svg {
+    background: transparent !important;
+}
+
+/* Responsive theme adjustments */
+@media (max-width: 768px) {
+    .theme-selector {
+        position: static;
+        transform: none;
+        margin-top: 0.5rem;
+    }
+    
+    .app-header {
+        flex-direction: column;
+        gap: 0.5rem;
     }
 }

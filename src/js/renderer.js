@@ -45,16 +45,7 @@ export class Renderer {
         try {
             // Clear previous content
             this.outputDiv.innerHTML = '';
-            window.mermaid.initialize({ // Reinitialize Mermaid to reset its state
-                startOnLoad: false,
-                theme: 'default',
-                securityLevel: 'loose', // Changed from 'strict' to support subgraphs
-                logLevel: 'debug',
-                flowchart: { 
-                    htmlLabels: true,
-                    subGraphTitleMargin: { top: 0, bottom: 0 } // Better subgraph rendering
-                }
-            });
+            // Note: Mermaid will be initialized by ThemeManager, so we don't reinitialize here
             const footer = document.querySelector('footer');
             if (footer && footer.innerHTML.includes('syntax error')) {
                 footer.innerHTML = footer.innerHTML.replace(/syntax error.*/, '');
@@ -68,6 +59,11 @@ export class Renderer {
             console.log('Sanitized content for rendering:', sanitizedContent);
             const { svg } = await window.mermaid.render(id, sanitizedContent);
             this.outputDiv.innerHTML = svg;
+            
+            // Apply current theme to the newly rendered output
+            if (window.app && window.app.themeManager) {
+                window.app.themeManager.applyThemeToOutput();
+            }
             
             console.log('Diagram rendered successfully');
             
@@ -306,5 +302,13 @@ export class Renderer {
                 }
             }, 1000);
         }, 5000);
+    }
+
+    // Method to re-render current diagram (useful for theme changes)
+    reRender() {
+        const currentContent = document.getElementById('mermaidInput').value;
+        if (currentContent && currentContent.trim()) {
+            this.renderDiagram(currentContent);
+        }
     }
 }
