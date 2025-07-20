@@ -153,6 +153,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #ffffff; /* Ensure white background for all themes */
 }
 
 #mermaidOutput:hover {
@@ -166,6 +167,7 @@ body {
     margin: 0 auto;
     display: block;
     max-width: 100%; /* Default constraint for desktop */
+    background-color: #ffffff !important; /* Force white background on SVG */
 }
 
 /* VS Code-like Action Buttons */
@@ -298,6 +300,7 @@ button[data-tooltip]:hover::after {
     width: 100%;
     box-shadow: var(--shadow-sm);
     border-bottom: 1px solid var(--border-color);
+    position: relative;
 }
 
 .app-header h1 {
@@ -312,6 +315,77 @@ button[data-tooltip]:hover::after {
     text-overflow: ellipsis; /* Add ellipsis if it needs to truncate */
     max-width: 100%; /* Ensure it doesn't overflow container */
 }
+
+/* Theme Selector - Old dropdown styles (remove) */
+.theme-selector {
+    display: none; /* Hide old dropdown selector */
+}
+
+/* Theme Options Popup - attached to zoom controls */
+#theme-selector-btn {
+    position: relative; /* Ensure popup positions relative to this button */
+}
+
+.theme-options-popup {
+    position: absolute;
+    top: calc(100% + 8px); /* Position below the theme button */
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: #ffffff;
+    padding: 0.5rem; /* Reduced padding */
+    border-radius: 8px; /* Smaller border radius */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    width: 40px; /* Fixed narrow width just for the squares */
+    transition: all 0.2s ease;
+    z-index: 1000;
+}
+
+.theme-options-popup.hidden {
+    display: none;
+}
+
+.theme-option {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.theme-option:hover {
+    transform: scale(1.05);
+    border-color: #6c63ff;
+}
+
+.theme-option.active {
+    border-color: #6c63ff;
+    box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+}
+
+.theme-option::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.theme-option.active::after {
+    opacity: 1;
+}
+
+/* Remove tooltips - no text labels needed */
 
 /* Centered footer */
 footer {
@@ -670,5 +744,58 @@ footer {
     footer {
         font-size: 0.7rem;
         padding: 8px 10px;
+    }
+    
+    /* Hide theme selector on very small screens to save space */
+    #theme-selector-btn {
+        display: none;
+    }
+}
+
+/* Theme Styles - Applied only to Mermaid output */
+/* All themes use white background for diagrams */
+
+/* Default theme uses Mermaid's default styling with white background */
+#mermaidOutput.theme-default {
+    background-color: #ffffff !important;
+}
+
+#mermaidOutput.theme-default svg {
+    background-color: #ffffff !important;
+}
+
+/* Dark/Black and White theme */
+#mermaidOutput.theme-dark {
+    background-color: #ffffff !important;
+}
+
+#mermaidOutput.theme-dark svg {
+    background-color: #ffffff !important;
+}
+
+/* Custom Blue-Orange theme */
+#mermaidOutput.theme-custom {
+    background-color: #ffffff !important;
+    border: 2px solid #f97316;
+    border-radius: var(--radius-md);
+    padding: 1rem;
+}
+
+#mermaidOutput.theme-custom svg {
+    background-color: #ffffff !important;
+}
+
+/* Responsive theme adjustments */
+@media (max-width: 768px) {
+    .theme-options-popup {
+        top: calc(100% + 5px);
+        right: -5px; /* Smaller offset for narrow popup */
+        width: 36px; /* Slightly smaller on mobile */
+        padding: 0.4rem;
+    }
+    
+    .app-header {
+        flex-direction: column;
+        gap: 0.5rem;
     }
 }

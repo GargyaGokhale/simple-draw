@@ -1,6 +1,7 @@
 import { Editor } from './editor.js';
 import { Renderer } from './renderer.js';
 import { ExportManager } from './exportManager.js';
+import { ThemeManager } from './themeManager.js';
 
 class App {
     constructor() {
@@ -8,6 +9,9 @@ class App {
         this.editor = new Editor();
         this.renderer = new Renderer();
         this.exportManager = new ExportManager();
+        
+        // Initialize theme manager after renderer is ready
+        this.themeManager = new ThemeManager(this.renderer);
 
         // Set initial example diagram with subgraphs
         const exampleDiagram = `graph TD
@@ -48,7 +52,8 @@ class App {
 document.addEventListener('DOMContentLoaded', () => {
     try {
         console.log('DOM content loaded');
-        new App();
+        window.app = new App(); // Make app globally available
+        console.log('Application initialized successfully');
     } catch (error) {
         console.error('Error initializing the application:', error);
         alert('An error occurred while starting the application.');
