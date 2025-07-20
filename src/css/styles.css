@@ -153,6 +153,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #ffffff; /* Ensure white background for all themes */
 }
 
 #mermaidOutput:hover {
@@ -166,6 +167,7 @@ body {
     margin: 0 auto;
     display: block;
     max-width: 100%; /* Default constraint for desktop */
+    background-color: #ffffff !important; /* Force white background on SVG */
 }
 
 /* VS Code-like Action Buttons */
@@ -719,8 +721,16 @@ footer {
 }
 
 /* Theme Styles - Applied only to Mermaid output */
+/* All themes use white background for diagrams */
 
-/* Default theme uses Mermaid's default styling */
+/* Default theme uses Mermaid's default styling with white background */
+#mermaidOutput.theme-default {
+    background-color: #ffffff !important;
+}
+
+#mermaidOutput.theme-default svg {
+    background-color: #ffffff !important;
+}
 
 /* Dark/Black and White theme */
 #mermaidOutput.theme-dark {
@@ -733,14 +743,14 @@ footer {
 
 /* Custom Blue-Orange theme */
 #mermaidOutput.theme-custom {
-    background: linear-gradient(135deg, #dbeafe 0%, #fed7aa 100%) !important;
+    background-color: #ffffff !important;
     border: 2px solid #f97316;
     border-radius: var(--radius-md);
     padding: 1rem;
 }
 
 #mermaidOutput.theme-custom svg {
-    background: transparent !important;
+    background-color: #ffffff !important;
 }
 
 /* Responsive theme adjustments */

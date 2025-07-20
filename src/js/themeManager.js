@@ -94,7 +94,10 @@ export class ThemeManager {
         switch (themeKey) {
             case 'custom':
                 return {
-                    // Blue and Orange theme variables
+                    // Blue and Orange theme variables with white background
+                    background: '#ffffff',
+                    mainBkg: '#ffffff',
+                    secondBkg: '#ffffff',
                     primaryColor: '#2563eb', // Blue
                     primaryTextColor: '#ffffff',
                     primaryBorderColor: '#1d4ed8',
@@ -110,7 +113,10 @@ export class ThemeManager {
                 };
             case 'dark':
                 return {
-                    // Black and white theme variables
+                    // Black and white theme variables with white background
+                    background: '#ffffff',
+                    mainBkg: '#ffffff',
+                    secondBkg: '#ffffff',
                     primaryColor: '#ffffff',
                     primaryTextColor: '#000000',
                     primaryBorderColor: '#000000',
@@ -125,7 +131,12 @@ export class ThemeManager {
                     c4: '#ced4da'
                 };
             default:
-                return {};
+                return {
+                    // Ensure white background for default theme too
+                    background: '#ffffff',
+                    mainBkg: '#ffffff',
+                    secondBkg: '#ffffff'
+                };
         }
     }
 
