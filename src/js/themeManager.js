@@ -57,7 +57,7 @@ export class ThemeManager {
             const themeOption = document.createElement('div');
             themeOption.className = `theme-option ${key === this.currentTheme ? 'active' : ''}`;
             themeOption.setAttribute('data-theme', key);
-            themeOption.setAttribute('data-tooltip', theme.name);
+            // Remove tooltip attribute - no text labels needed
             this.updateThemeOption(themeOption, key);
             themeOptions.appendChild(themeOption);
         });
