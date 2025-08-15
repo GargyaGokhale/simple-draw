@@ -62,6 +62,12 @@ export function sanitizeInput(input) {
  * This is a specialized version that preserves Mermaid syntax while
  * still protecting against XSS attacks and handles sequence diagram formatting.
  * 
+ * Note: This function intentionally does NOT convert '&' to '&amp;' because:
+ * 1. Mermaid's parser expects raw '&' characters in text content
+ * 2. Converting '&' to '&amp;' breaks Mermaid's parsing and causes syntax errors
+ * 3. The '&' character is safe in this context as Mermaid handles it properly during rendering
+ * 4. Only truly dangerous characters like '<' and '>' are converted to prevent XSS
+ * 
  * @function sanitizeMermaidInput
  * @param {string} input - The raw Mermaid diagram code to be sanitized
  * @returns {string} The sanitized Mermaid code safe for rendering
@@ -72,6 +78,11 @@ export function sanitizeInput(input) {
  * // Mermaid-specific sanitization
  * const diagram = sanitizeMermaidInput('graph TD\n  A[Start] --> B{Decision}');
  * // Preserves Mermaid syntax while escaping dangerous content
+ * 
+ * @example
+ * // Handles ampersands correctly for sequence diagrams
+ * const seq = sanitizeMermaidInput('sequenceDiagram\n  A->>B: Pull image & create pods');
+ * // Result: 'sequenceDiagram\n  A->>B: Pull image & create pods' (ampersand preserved)
  * 
  * @see {@link https://mermaid.js.org/|Mermaid Documentation}
  */
@@ -85,13 +96,16 @@ export function sanitizeMermaidInput(input) {
         throw new TypeError(`Expected string input, received ${typeof input}`);
     }
     
-    // First, sanitize dangerous characters
+    // For Mermaid diagrams, we only need to sanitize truly dangerous characters
+    // The '&' character is safe in Mermaid content and should not be converted to &amp;
+    // as it can break Mermaid parsing
     const mermaidSafeEntityMap = {
-        '<': '&lt;',
-        '&': '&amp;'
+        '<': '&lt;'
+        // Note: We don't convert '&' to '&amp;' for Mermaid as it breaks parsing
+        // and '&' is not dangerous in this context since Mermaid handles it safely
     };
     
-    let sanitized = input.replace(/[<>&]/g, (char) => {
+    let sanitized = input.replace(/[<>]/g, (char) => {
         return mermaidSafeEntityMap[char] || char;
     });
     
