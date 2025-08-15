@@ -1,0 +1,111 @@
+/**
+ * Unit tests for the Sanitizer utility module.
+ * Tests input validation, sanitization, and error handling.
+ * 
+ * @file sanitizer.test.js
+ * @author Gargya Gokhale
+ * @version 1.0.0
+ */
+
+import { 
+    sanitizeInput, 
+    sanitizeMermaidInput, 
+    validateAndSanitizeInput 
+} from '../sanitizer.js';
+
+/**
+ * Test suite for sanitizeInput function
+ */
+console.group('🧪 Testing sanitizeInput function');
+
+// Test basic HTML escaping
+try {
+    const result = sanitizeInput('<script>alert("xss")</script>');
+    const expected = '&lt;script&gt;alert(&quot;xss&quot;)&lt;&#x2F;script&gt;';
+    console.assert(result === expected, 'Failed: Basic HTML escaping');
+    console.log('✅ Basic HTML escaping test passed');
+} catch (error) {
+    console.error('❌ Basic HTML escaping test failed:', error);
+}
+
+// Test ampersand escaping
+try {
+    const result = sanitizeInput('User & Admin');
+    const expected = 'User &amp; Admin';
+    console.assert(result === expected, 'Failed: Ampersand escaping');
+    console.log('✅ Ampersand escaping test passed');
+} catch (error) {
+    console.error('❌ Ampersand escaping test failed:', error);
+}
+
+// Test null input handling
+try {
+    sanitizeInput(null);
+    console.error('❌ Null input test failed: Should have thrown error');
+} catch (error) {
+    console.log('✅ Null input test passed: Correctly threw error');
+}
+
+// Test non-string input handling
+try {
+    sanitizeInput(123);
+    console.error('❌ Non-string input test failed: Should have thrown error');
+} catch (error) {
+    console.log('✅ Non-string input test passed: Correctly threw error');
+}
+
+console.groupEnd();
+
+/**
+ * Test suite for sanitizeMermaidInput function
+ */
+console.group('🧪 Testing sanitizeMermaidInput function');
+
+// Test Mermaid-specific sanitization
+try {
+    const result = sanitizeMermaidInput('graph TD\n  A["User & Admin"] --> B');
+    const expected = 'graph TD\n  A[&quot;User &amp; Admin&quot;] --> B';
+    console.assert(result === expected, 'Failed: Mermaid sanitization');
+    console.log('✅ Mermaid sanitization test passed');
+} catch (error) {
+    console.error('❌ Mermaid sanitization test failed:', error);
+}
+
+console.groupEnd();
+
+/**
+ * Test suite for validateAndSanitizeInput function
+ */
+console.group('🧪 Testing validateAndSanitizeInput function');
+
+// Test length validation
+try {
+    validateAndSanitizeInput('a'.repeat(10001));
+    console.error('❌ Length validation test failed: Should have thrown error');
+} catch (error) {
+    console.log('✅ Length validation test passed: Correctly threw error');
+}
+
+// Test blacklist patterns
+try {
+    validateAndSanitizeInput('<script>alert("test")</script>', {
+        blacklistPatterns: [/<script/i]
+    });
+    console.error('❌ Blacklist pattern test failed: Should have thrown error');
+} catch (error) {
+    console.log('✅ Blacklist pattern test passed: Correctly threw error');
+}
+
+// Test valid input
+try {
+    const result = validateAndSanitizeInput('Hello & World', { maxLength: 100 });
+    const expected = 'Hello &amp; World';
+    console.assert(result === expected, 'Failed: Valid input sanitization');
+    console.log('✅ Valid input sanitization test passed');
+} catch (error) {
+    console.error('❌ Valid input sanitization test failed:', error);
+}
+
+console.groupEnd();
+
+console.log('🏁 All sanitizer tests completed!');

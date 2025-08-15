@@ -1,373 +1,743 @@
-* {
+/**
+ * Simple Draw Application Styles
+ * =============================================================================
+ * 
+ * A comprehensive CSS file for the Simple Draw Mermaid diagram editor.
+ * Organized following CSS best practices with proper documentation,
+ * consistent naming conventions, and responsive design principles.
+ * 
+ * @author     Gargya Gokhale
+ * @version    1.0.0
+ * @created    2025-08-15
+ * 
+ * Structure:
+ * 1. CSS Reset & Base Styles
+ * 2. CSS Custom Properties (Variables)
+ * 3. Typography & Fonts
+ * 4. Layout & Grid System
+ * 5. Component Styles
+ * 6. Interactive Elements
+ * 7. Theme Implementations
+ * 8. Responsive Design
+ * 9. Utility Classes
+ * 10. Print Styles
+ */
+
+/* =============================================================================
+   1. CSS RESET & BASE STYLES
+   ============================================================================= */
+
+/**
+ * Modern CSS reset for consistent cross-browser rendering
+ * Removes default margins, paddings, and sets box-sizing to border-box
+ */
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-:root {
-    --primary: #6c63ff;
-    --primary-hover: #5a52d5;
-    --text-dark: #2d3748;
-    --text-light: #718096;
-    --bg-light: #f8fafc;
-    --bg-container: #ffffff;
-    --border-color: #e2e8f0;
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --radius-sm: 6px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
+/**
+ * Base HTML element styles
+ * Sets up the document foundation
+ */
+html {
+    line-height: 1.15; /* Improve text rendering */
+    scroll-behavior: smooth; /* Smooth scrolling for anchor links */
 }
 
+/**
+ * Body element with full viewport setup
+ * Establishes the main layout container
+ */
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: var(--bg-light);
-    color: var(--text-dark);
-    line-height: 1.6;
-    padding: 1rem;
-    height: 100vh;
+    font-family: var(--font-family-base);
+    background-color: var(--color-background-primary);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-base);
+    padding: var(--spacing-base);
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.container {
+/* =============================================================================
+   2. CSS CUSTOM PROPERTIES (VARIABLES)
+   ============================================================================= */
+
+/**
+ * Design system variables organized by category
+ * Provides consistent values throughout the application
+ */
+:root {
+    /* Color Palette - Primary */
+    --color-primary: #6c63ff;
+    --color-primary-hover: #5a52d5;
+    --color-primary-light: rgba(108, 99, 255, 0.1);
+    --color-primary-dark: #4c46d6;
+
+    /* Color Palette - Text */
+    --color-text-primary: #2d3748;
+    --color-text-secondary: #718096;
+    --color-text-muted: #a0aec0;
+    --color-text-inverse: #ffffff;
+
+    /* Color Palette - Background */
+    --color-background-primary: #f8fafc;
+    --color-background-secondary: #ffffff;
+    --color-background-tertiary: #f6f8fa;
+    --color-background-overlay: rgba(255, 255, 255, 0.9);
+
+    /* Color Palette - Border */
+    --color-border-light: #e2e8f0;
+    --color-border-medium: #cbd5e0;
+    --color-border-dark: #a0aec0;
+
+    /* Color Palette - Status */
+    --color-success: #48bb78;
+    --color-warning: #ed8936;
+    --color-error: #f56565;
+    --color-info: #4299e1;
+
+    /* Typography Scale */
+    --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-family-code: 'Fira Code', 'Consolas', 'Monaco', monospace;
+    
+    --font-size-xs: 0.75rem;    /* 12px */
+    --font-size-sm: 0.875rem;   /* 14px */
+    --font-size-base: 1rem;     /* 16px */
+    --font-size-lg: 1.125rem;   /* 18px */
+    --font-size-xl: 1.25rem;    /* 20px */
+    --font-size-2xl: 1.5rem;    /* 24px */
+
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    --line-height-tight: 1.25;
+    --line-height-base: 1.6;
+    --line-height-relaxed: 1.75;
+
+    /* Spacing Scale (8px base unit) */
+    --spacing-xs: 0.25rem;   /* 4px */
+    --spacing-sm: 0.5rem;    /* 8px */
+    --spacing-base: 1rem;    /* 16px */
+    --spacing-lg: 1.5rem;    /* 24px */
+    --spacing-xl: 2rem;      /* 32px */
+    --spacing-2xl: 2.5rem;   /* 40px */
+    --spacing-3xl: 3rem;     /* 48px */
+
+    /* Border Radius Scale */
+    --radius-sm: 0.375rem;   /* 6px */
+    --radius-base: 0.5rem;   /* 8px */
+    --radius-lg: 0.75rem;    /* 12px */
+    --radius-xl: 1rem;       /* 16px */
+    --radius-full: 9999px;   /* Fully rounded */
+
+    /* Shadow Scale */
+    --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-base: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+    /* Z-Index Scale */
+    --z-dropdown: 10;
+    --z-sticky: 20;
+    --z-fixed: 30;
+    --z-modal-backdrop: 40;
+    --z-modal: 50;
+    --z-popover: 60;
+    --z-tooltip: 70;
+
+    /* Layout Dimensions */
+    --container-max-width: 1400px;
+    --panel-min-height: calc(100vh - 200px); /* Dynamic height based on viewport */
+    --mobile-panel-height: calc(100vh - 300px);
+    --input-min-height: calc(100vh - 220px); /* Dynamic height for inputs */
+
+    /* Animation & Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.2s ease;
+    --transition-slow: 0.3s ease;
+    --transition-bounce: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    /* Interactive Element Sizes */
+    --button-height-sm: 2rem;      /* 32px */
+    --button-height-base: 2.5rem;  /* 40px */
+    --button-height-lg: 3rem;      /* 48px */
+    
+    --icon-size-sm: 1rem;          /* 16px */
+    --icon-size-base: 1.25rem;     /* 20px */
+    --icon-size-lg: 1.5rem;        /* 24px */
+}
+
+/* =============================================================================
+   3. TYPOGRAPHY & FONTS
+   ============================================================================= */
+
+/**
+ * Heading styles with consistent hierarchy
+ */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-base);
+}
+
+h1 { font-size: var(--font-size-2xl); }
+h2 { font-size: var(--font-size-xl); }
+h3 { font-size: var(--font-size-lg); }
+h4 { font-size: var(--font-size-base); }
+h5 { font-size: var(--font-size-sm); }
+h6 { font-size: var(--font-size-xs); }
+
+/**
+ * Paragraph and text elements
+ */
+p {
+    margin-bottom: var(--spacing-base);
+    line-height: var(--line-height-base);
+}
+
+/**
+ * Code and preformatted text
+ */
+code, pre {
+    font-family: var(--font-family-code);
+    font-size: var(--font-size-sm);
+}
+
+/* =============================================================================
+   4. LAYOUT & GRID SYSTEM
+   ============================================================================= */
+
+/**
+ * Main application container
+ * Creates the primary layout structure with responsive behavior
+ */
+.app-container {
     display: flex;
-    gap: 1.5rem;
-    max-width: 1400px;
+    gap: var(--spacing-lg);
+    max-width: var(--container-max-width);
     margin: 0 auto;
     flex: 1;
     width: 100%;
     border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: var(--shadow-md);
-    background-color: var(--bg-container);
+    box-shadow: var(--shadow-base);
+    background-color: var(--color-background-secondary);
 }
 
-.editor-panel, .preview-panel {
+/**
+ * Panel layout system
+ * Provides consistent panel structure for editor and preview
+ */
+.panel {
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     flex: 1;
-    padding: 1.5rem;
-    background-color: var(--bg-container);
+    padding: var(--spacing-lg);
+    background-color: var(--color-background-secondary);
     overflow: hidden;
-    min-height: 600px; /* Explicit minimum height */
+    min-height: var(--panel-min-height);
 }
 
-.info-icon {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    z-index: 10;
+/* Panel variants - placeholder for future customization */
+.panel--editor {
+    /* Editor-specific styles like syntax highlighting integration */
+    position: relative; /* Ensure position context for absolutely positioned children */
 }
 
-.info-icon button {
-    font-size: 1rem;
+.panel--preview {
+    /* Preview-specific styles like custom borders or backgrounds */
+    position: relative; /* Ensure position context for absolutely positioned children */
 }
 
-.info-icon button:hover {
-    color: white;
+/**
+ * Container system for inputs and outputs
+ * Provides consistent sizing and behavior for content areas
+ */
+.content-container {
+    position: relative;
+    width: 100%;
+    height: 100%; /* Use full available height */
+    border-radius: var(--radius-base);
+    overflow: hidden;
+    flex: 1; /* Allow container to grow */
 }
 
-.info-popup {
+/* =============================================================================
+   5. COMPONENT STYLES
+   ============================================================================= */
+
+/**
+ * Header Component
+ * Application title and navigation area
+ */
+.app-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: var(--spacing-base);
+    padding: var(--spacing-sm) 0;
+    margin-bottom: var(--spacing-base);
+    background-color: var(--color-background-secondary);
+    width: 100%;
+    box-shadow: var(--shadow-xs);
+    border-bottom: 1px solid var(--color-border-light);
+    position: relative;
+}
+
+.app-header__title {
+    font-size: clamp(var(--font-size-base), 2vw, var(--font-size-xl));
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: var(--font-weight-medium);
+    opacity: 0.85;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+/**
+ * Footer Component
+ * Application footer with attribution and links
+ */
+.app-footer {
+    text-align: center;
+    padding: var(--spacing-base) 0;
+    background-color: var(--color-background-secondary);
+    border-top: 1px solid var(--color-border-light);
+    margin-top: var(--spacing-base);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+/**
+ * Input Components
+ * Textarea and input field styling
+ */
+.input-textarea {
+    width: 100%;
+    height: 100%;
+    padding: var(--spacing-base);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-base);
+    background-color: var(--color-background-tertiary);
+    resize: none;
+    font-family: var(--font-family-code);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-base);
+    min-height: 300px; /* Reasonable minimum height */
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.input-textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+/**
+ * Output Display Component
+ * Container for rendered diagrams
+ */
+.output-display {
+    width: 100%;
+    height: 100%;
+    padding: var(--spacing-base);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-base);
+    background-color: var(--color-background-secondary);
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: box-shadow var(--transition-base);
+}
+
+.output-display:hover {
+    box-shadow: var(--shadow-xs);
+}
+
+.output-display__svg {
+    width: auto !important;
+    height: auto !important;
+    margin: 0 auto;
+    display: block;
+    max-width: 100%;
+    background-color: var(--color-background-secondary) !important;
+}
+
+/**
+ * Modal and Popup Components
+ * Overlay dialogs and information popups
+ */
+.modal-overlay {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 90%;
     max-width: 600px;
-    background-color: var(--bg-container);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-md);
-    z-index: 20;
-    padding: 1rem;
+    background-color: var(--color-background-secondary);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-base);
+    box-shadow: var(--shadow-lg);
+    z-index: var(--z-modal);
+    padding: var(--spacing-base);
     display: none;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--spacing-base);
     overflow-y: auto;
     max-height: 80vh;
 }
 
-.info-popup.active {
+.modal-overlay--active {
     display: flex;
 }
 
-.info-popup .close-btn {
+.modal-overlay__close {
     align-self: flex-end;
-    background-color: var(--primary);
-    color: white;
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
     border: none;
     border-radius: var(--radius-sm);
-    padding: 0.5rem;
-    font-size: 1rem;
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-base);
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color var(--transition-base);
 }
 
-.info-popup .close-btn:hover {
-    background-color: var(--primary-hover);
+.modal-overlay__close:hover {
+    background-color: var(--color-primary-hover);
 }
 
-/* Removed border between panels */
-.editor-panel {
-    border-right: none;
+/**
+ * Example Code Snippets
+ * Styled code examples with syntax highlighting
+ */
+.examples-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
 }
 
-/* Simplified container styles with direct height values */
-.input-container, .output-container {
-    position: relative;
-    width: 100%;
-    height: 600px; /* Explicit height in pixels */
-    border-radius: var(--radius-md);
+.code-snippet {
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-base);
     overflow: hidden;
+    background-color: var(--color-background-tertiary);
 }
 
-#mermaidInput, #mermaidOutput {
-    width: 100%;
-    height: 100%; /* Take full height of parent */
-    padding: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    background-color: var(--bg-light);
+.code-snippet__header {
+    padding: var(--spacing-sm) var(--spacing-base);
+    border-bottom: 1px solid var(--color-border-light);
 }
 
-#mermaidInput {
-    resize: none;
-    font-family: 'Fira Code', 'Consolas', monospace;
-    font-size: 14px;
-    color: var(--text-dark);
-    line-height: 1.5;
-    min-height: 580px; /* Explicit minimum height */
+.code-snippet__title {
+    margin: 0;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
 }
 
-#mermaidInput:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+.code-snippet__container {
+    position: relative;
+    background-color: var(--color-background-tertiary);
 }
 
-#mermaidOutput {
-    overflow: auto;
+.code-snippet__meta {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    background-color: #ffffff; /* Ensure white background for all themes */
+    padding: var(--spacing-sm) var(--spacing-base);
+    background-color: var(--color-background-primary);
+    border-bottom: 1px solid var(--color-border-light);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
 }
 
-#mermaidOutput:hover {
-    box-shadow: var(--shadow-sm);
+.code-snippet__block {
+    margin: 0;
+    padding: var(--spacing-base);
+    background-color: var(--color-background-tertiary);
+    overflow-x: auto;
+    font-family: var(--font-family-code);
 }
 
-/* Ensure the SVG can expand to its full size and be scrollable */
-#mermaidOutput svg {
-    width: auto !important;
-    height: auto !important;
-    margin: 0 auto;
+.code-snippet__code {
     display: block;
-    max-width: 100%; /* Default constraint for desktop */
-    background-color: #ffffff !important; /* Force white background on SVG */
+    white-space: pre;
+    color: var(--color-text-primary);
 }
 
-/* VS Code-like Action Buttons */
-.button {
-    background-color: rgba(255, 255, 255, 0.9);
-    color: var(--primary);
+/* =============================================================================
+   6. INTERACTIVE ELEMENTS
+   ============================================================================= */
+
+/**
+ * Button Component System
+ * Consistent button styling with variants and states
+ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-sm) var(--spacing-base);
     border: none;
     border-radius: var(--radius-sm);
-    padding: 0.375rem;
-    font-size: 0.875rem;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
     cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative; /* Ensure each button has its own positioning context */
+    transition: all var(--transition-base);
+    position: relative;
+    outline: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
-.button:hover {
-    background-color: var(--primary);
-    color: white;
+/* Button Variants */
+.btn--primary {
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
 }
 
-.action-button, .action-buttons {
+.btn--primary:hover {
+    background-color: var(--color-primary-hover);
+    transform: translateY(-1px);
+}
+
+.btn--secondary {
+    background-color: var(--color-background-overlay);
+    color: var(--color-primary);
+    border: 1px solid var(--color-border-light);
+}
+
+.btn--secondary:hover {
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+    border-color: var(--color-primary);
+}
+
+.btn--ghost {
+    background: none;
+    color: var(--color-primary);
+    padding: var(--spacing-xs);
+}
+
+.btn--ghost:hover {
+    color: var(--color-primary-hover);
+    background-color: var(--color-primary-light);
+}
+
+/* Button Sizes */
+.btn--sm {
+    height: var(--button-height-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-xs);
+}
+
+.btn--lg {
+    height: var(--button-height-lg);
+    padding: var(--spacing-base) var(--spacing-xl);
+    font-size: var(--font-size-lg);
+}
+
+/* Icon-only buttons */
+.btn--icon {
+    width: var(--button-height-base);
+    height: var(--button-height-base);
+    padding: 0;
+    border-radius: var(--radius-sm);
+}
+
+.btn--icon-sm {
+    width: var(--button-height-sm);
+    height: var(--button-height-sm);
+}
+
+.btn--icon-lg {
+    width: var(--button-height-lg);
+    height: var(--button-height-lg);
+}
+
+/* Button States */
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn:disabled:hover {
+    transform: none;
+    background-color: initial;
+    color: initial;
+}
+
+/**
+ * Action Button Groups
+ * Floating action buttons for quick access
+ */
+.action-buttons {
     position: absolute;
-    bottom: 0.75rem;
-    right: 0.75rem;
+    bottom: var(--spacing-sm);
+    right: var(--spacing-sm);
     display: flex;
-    gap: 0.5rem;
-    background-color: rgba(255, 255, 255, 0.7);
+    gap: var(--spacing-sm);
+    background-color: var(--color-background-overlay);
+    -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
     border-radius: var(--radius-sm);
-    padding: 0.25rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-xs);
+    box-shadow: var(--shadow-sm);
     align-items: center;
+    z-index: var(--z-fixed);
 }
 
-.action-buttons {
-    z-index: 15;
-}
-
-.action-button button, .action-buttons button {
-    background-color: rgba(255, 255, 255, 0.9);
-    color: var(--primary);
-    border: none;
+/**
+ * Zoom and Pan Controls
+ * Interactive diagram manipulation controls
+ */
+.zoom-controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--color-background-overlay);
+    padding: var(--spacing-xs);
     border-radius: var(--radius-sm);
-    padding: 0.375rem;
-    font-size: 0.875rem;
+    box-shadow: var(--shadow-xs);
+    z-index: var(--z-sticky);
+    display: flex;
+    gap: var(--spacing-xs);
+}
+
+.zoom-controls__btn {
+    width: 30px;
+    height: 30px;
     cursor: pointer;
-    transition: all 0.2s;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-background-secondary);
+    color: var(--color-primary);
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all var(--transition-base);
+    padding: 0;
 }
 
-.action-button button:hover, .action-buttons button:hover {
-    background-color: var(--primary);
-    color: white;
+.zoom-controls__btn:hover,
+.zoom-controls__btn--active {
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
 }
 
-/* Remove duplicate tooltip styles and update with a cleaner pop-out style */
-
-/* Buttons inside containers */
-button {
-    background: none;
-    border: none;
-    color: var(--primary);
-    font-size: 1rem;
-    cursor: pointer;
-    padding: 0.3rem;
-    transition: color 0.2s ease;
-    z-index: 10; /* Bring buttons to the front */
-    position: relative; /* Ensure position reference for tooltips */
+.zoom-controls__btn i {
+    font-size: 14px;
 }
 
-button:hover {
-    color: var(--primary-hover);
+/**
+ * Tooltip System
+ * Accessible tooltips for enhanced UX
+ */
+.tooltip {
+    position: relative;
 }
 
-button:active {
-    color: var(--primary);
-}
-
-/* Improved pop-out tooltip style */
-button[data-tooltip]::after {
+.tooltip[data-tooltip]::after {
     content: attr(data-tooltip);
     position: absolute;
     bottom: 120%;
     left: 50%;
-    transform: translateX(-50%);
-    background-color: var(--text-dark);
-    color: white;
-    padding: 0.4rem 0.8rem;
+    transform: translateX(-50%) scale(0.8);
+    background-color: var(--color-text-primary);
+    color: var(--color-text-inverse);
+    padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: var(--radius-sm);
-    font-size: 0.75rem;
+    font-size: var(--font-size-xs);
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transition: all 0.2s ease;
-    z-index: 20;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    /* Pop-out animation */
+    transition: all var(--transition-base);
+    z-index: var(--z-tooltip);
+    box-shadow: var(--shadow-sm);
     transform-origin: bottom;
-    transform: translateX(-50%) scale(0.8);
     visibility: hidden;
 }
 
-button[data-tooltip]:hover::after {
+.tooltip:hover[data-tooltip]::after {
     opacity: 1;
     transform: translateX(-50%) scale(1);
     visibility: visible;
 }
 
-.export-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.75rem;
-    margin-top: 0.75rem;
-}
-
-/* Modern header styling - full-width white strip like footer */
-.app-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 1rem;
-    padding: 0.75rem 0;
-    margin-bottom: 1rem;
-    background-color: var(--bg-container);
-    width: 100%;
-    box-shadow: var(--shadow-sm);
-    border-bottom: 1px solid var(--border-color);
+/**
+ * Theme Selector Component
+ * Visual theme selection interface
+ */
+.theme-selector {
     position: relative;
 }
 
-.app-header h1 {
-    font-size: clamp(1rem, 2vw, 1.5rem); /* Responsive font size */
-    color: var(--text-dark);
-    text-transform: uppercase;
-    letter-spacing: 0.05rem;
-    font-weight: 500;
-    opacity: 0.85;
-    white-space: nowrap; /* Keep title on one line */
-    overflow: hidden;
-    text-overflow: ellipsis; /* Add ellipsis if it needs to truncate */
-    max-width: 100%; /* Ensure it doesn't overflow container */
-}
-
-/* Theme Selector - Old dropdown styles (remove) */
-.theme-selector {
-    display: none; /* Hide old dropdown selector */
-}
-
-/* Theme Options Popup - attached to zoom controls */
-#theme-selector-btn {
-    position: relative; /* Ensure popup positions relative to this button */
-}
-
-.theme-options-popup {
+.theme-selector__popup {
     position: absolute;
-    top: calc(100% + 8px); /* Position below the theme button */
+    top: calc(100% + 8px);
     right: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    background: #ffffff;
-    padding: 0.5rem; /* Reduced padding */
-    border-radius: 8px; /* Smaller border radius */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    width: 40px; /* Fixed narrow width just for the squares */
-    transition: all 0.2s ease;
-    z-index: 1000;
+    gap: var(--spacing-sm);
+    background: var(--color-background-secondary);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-base);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--color-border-light);
+    width: 40px;
+    transition: all var(--transition-base);
+    z-index: var(--z-dropdown);
 }
 
-.theme-options-popup.hidden {
+.theme-selector__popup--hidden {
     display: none;
 }
 
-.theme-option {
+.theme-selector__option {
     width: 28px;
     height: 28px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     border: 2px solid transparent;
-    transition: all 0.2s ease;
+    transition: all var(--transition-base);
     position: relative;
 }
 
-.theme-option:hover {
+.theme-selector__option:hover {
     transform: scale(1.05);
-    border-color: #6c63ff;
+    border-color: var(--color-primary);
 }
 
-.theme-option.active {
-    border-color: #6c63ff;
-    box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+.theme-selector__option--active {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-primary-light);
 }
 
-.theme-option::after {
+.theme-selector__option::after {
     content: '';
     position: absolute;
     top: 50%;
@@ -375,318 +745,390 @@ button[data-tooltip]:hover::after {
     transform: translate(-50%, -50%);
     width: 12px;
     height: 12px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
+    border-radius: var(--radius-full);
+    background: var(--color-background-overlay);
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: opacity var(--transition-base);
 }
 
-.theme-option.active::after {
+.theme-selector__option--active::after {
     opacity: 1;
 }
 
-/* Remove tooltips - no text labels needed */
+/* =============================================================================
+   7. THEME IMPLEMENTATIONS
+   ============================================================================= */
 
-/* Centered footer */
-footer {
-    text-align: center;
-    padding: 1rem 0;
-    background-color: var(--bg-container);
-    border-top: 1px solid var(--border-color);
-    margin-top: 1rem;
-    font-size: 0.85rem;
-    color: var(--text-light);
+/**
+ * Theme system implementation
+ * All themes maintain white background for diagram clarity
+ */
+
+/* Default Theme */
+.theme-default .output-display {
+    background-color: var(--color-background-secondary) !important;
 }
 
-/* Code snippet styles for examples */
-.examples-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+.theme-default .output-display__svg {
+    background-color: var(--color-background-secondary) !important;
 }
 
-.snippet {
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    background-color: var(--bg-light);
+/* Dark/Monochrome Theme */
+.theme-dark .output-display {
+    background-color: var(--color-background-secondary) !important;
 }
 
-.snippet-header {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--border-color);
+.theme-dark .output-display__svg {
+    background-color: var(--color-background-secondary) !important;
 }
 
-.snippet-header h3 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
+/* Custom Blue-Orange Theme */
+.theme-custom .output-display {
+    background-color: var(--color-background-secondary) !important;
+    border: 2px solid #f97316;
+    border-radius: var(--radius-base);
+    padding: var(--spacing-base);
 }
 
-.code-container {
-    position: relative;
-    background-color: #f6f8fa;
+.theme-custom .output-display__svg {
+    background-color: var(--color-background-secondary) !important;
 }
 
-.code-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    background-color: #f1f3f5;
-    border-bottom: 1px solid var(--border-color);
-    font-size: 0.85rem;
-    color: #6a737d;
+/* Theme Color Swatches */
+.theme-selector__option--default {
+    background: linear-gradient(45deg, #6c63ff 50%, #a855f7 50%);
 }
 
-.code-block {
-    margin: 0;
-    padding: 1rem;
-    background-color: #f6f8fa;
-    overflow-x: auto;
-    font-family: 'Fira Code', monospace;
+.theme-selector__option--dark {
+    background: linear-gradient(45deg, #000000 50%, #ffffff 50%);
 }
 
-.example-code {
-    display: block;
-    white-space: pre;
-    color: #24292e;
+.theme-selector__option--custom {
+    background: linear-gradient(45deg, #2563eb 50%, #f97316 50%);
 }
 
-.copy-btn {
-    background: none;
-    border: none;
-    color: #6a737d;
-    cursor: pointer;
-    padding: 0.25rem;
-    font-size: 0.875rem;
+/* =============================================================================
+   8. RESPONSIVE DESIGN
+   ============================================================================= */
+
+/**
+ * Mobile-First Responsive Design
+ * Breakpoints: 480px (small), 768px (medium), 1024px (large)
+ */
+
+/* Base styles are mobile-first */
+
+/* Small screens (phones) */
+@media (max-width: 480px) {
+    body {
+        padding: var(--spacing-xs);
+    }
+    
+    .app-header__title {
+        font-size: var(--font-size-sm);
+        padding: 0 var(--spacing-xs);
+    }
+    
+    .container,
+    .app-container {
+        padding: var(--spacing-xs);
+        gap: var(--spacing-xs);
+    }
+    
+    .panel,
+    .editor-panel, 
+    .preview-panel {
+        min-height: calc(40vh - 40px); /* Smaller panels for phones */
+        max-height: calc(45vh);
+        padding: var(--spacing-xs);
+    }
+    
+    .content-container,
+    .input-container,
+    .output-container {
+        height: calc(40vh - 60px);
+        min-height: calc(40vh - 60px);
+    }
+    
+    .input-textarea,
+    .output-display,
+    #mermaidInput,
+    #mermaidOutput {
+        min-height: calc(40vh - 100px);
+        padding: var(--spacing-xs);
+        font-size: var(--font-size-xs);
+    }
+    
+    .tooltip[data-tooltip]::after {
+        display: none; /* Hide tooltips on very small screens */
+    }
+    
+    .app-footer {
+        font-size: var(--font-size-xs);
+        padding: var(--spacing-sm);
+    }
+    
+    .theme-selector {
+        display: none; /* Hide theme selector to save space */
+    }
 }
 
-.copy-btn:hover {
-    color: var(--primary);
-}
-
-.use-btn {
-    display: block;
-    width: 100%;
-    padding: 0.75rem;
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.use-btn:hover {
-    background-color: var(--primary-hover);
-}
-
-/* Zoom and Pan Controls */
-#zoom-controls {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: rgba(255, 255, 255, 0.85);
-    padding: 5px;
-    border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-sm);
-    z-index: 100;
-    display: flex;
-    gap: 5px;
-}
-
-.zoom-control-btn {
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    background-color: var(--bg-container);
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-    padding: 0;
-}
-
-.zoom-control-btn i {
-    font-size: 14px;
-}
-
-.zoom-control-btn:hover {
-    background-color: var(--primary);
-    color: white;
-}
-
-.zoom-control-btn.active {
-    background-color: var(--primary);
-    color: white;
-}
-
-/* Improved Mobile Responsiveness */
+/* Medium screens (tablets) */
 @media (max-width: 768px) {
     body {
         overflow-y: auto;
         height: auto;
-        padding: 0;
+        padding: var(--spacing-sm);
+        min-height: 100vh;
     }
     
-    .container {
-        flex-direction: column; /* Stack for mobile */
+    .container,
+    .app-container {
+        flex-direction: column;
         height: auto;
-        overflow: visible;  
-        padding: 10px;
-        gap: 10px;
+        overflow: visible;
+        padding: var(--spacing-sm);
+        gap: var(--spacing-sm);
+        max-width: 100%;
+        margin: 0;
+        border-radius: 0;
     }
 
-    .editor-panel, .preview-panel {
+    .panel,
+    .editor-panel,
+    .preview-panel {
         height: auto;
-        min-height: 400px;
-        padding: 10px;
+        min-height: calc(45vh - 60px); /* Each panel takes roughly 45% of viewport */
+        max-height: calc(50vh);
+        padding: var(--spacing-sm);
+        width: 100%;
+        flex: none; /* Don't flex grow on mobile */
     }
 
-    .input-container, .output-container {
-        height: 400px; /* Fixed height for mobile */
-        min-height: 400px;
+    .content-container,
+    .input-container,
+    .output-container {
+        height: calc(45vh - 80px);
+        min-height: calc(45vh - 80px);
+        max-height: calc(45vh - 40px);
     }
 
-    #mermaidInput, #mermaidOutput {
-        height: 100%;
-        min-height: 380px;
-        font-size: 14px;
-        padding: 10px;
-    }
-
+    .input-textarea,
+    .output-display,
+    #mermaidInput,
     #mermaidOutput {
-        overflow: auto !important; /* Force scrolling capability */
+        height: 100%;
+        min-height: calc(45vh - 120px); /* Ensure proper mobile sizing */
+        font-size: var(--font-size-sm);
+        padding: var(--spacing-sm);
+    }
+
+    .output-display {
+        overflow: auto !important;
         display: block;
-        padding: 15px;
+        padding: var(--spacing-base);
         position: relative;
-        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
     }
 
-    /* Apply scaling only for mobile */
-    #mermaidOutput svg {
-        transform: scale(0.8); 
+    .output-display__svg {
+        transform: scale(0.8);
         transform-origin: top center;
-        max-width: none !important; /* Remove width constraint on mobile */
+        max-width: none !important;
     }
 
-    /* Improve action buttons visibility */
     .action-buttons {
-        bottom: 15px;
-        right: 15px;
+        bottom: var(--spacing-base);
+        right: var(--spacing-base);
         background-color: rgba(255, 255, 255, 0.95);
-        border-radius: 25px;
-        padding: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        z-index: 1000;
+        border-radius: var(--radius-xl);
+        padding: var(--spacing-sm);
+        box-shadow: var(--shadow-lg);
+        z-index: var(--z-fixed);
         display: flex;
-        gap: 15px;
+        gap: var(--spacing-base);
         position: fixed;
     }
 
-    .action-button {
-        bottom: 15px;
-        right: 15px;
-    }
-
-    .action-buttons button, 
-    .action-button button {
+    .action-buttons .btn {
         width: 44px;
         height: 44px;
-        border-radius: 50%;
-        background-color: white;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s ease, background-color 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        border-radius: var(--radius-full);
+        background-color: var(--color-background-secondary);
+        box-shadow: var(--shadow-xs);
+        transition: transform var(--transition-base), background-color var(--transition-base);
     }
 
-    .action-buttons button:hover, 
-    .action-button button:hover {
+    .action-buttons .btn:hover {
         transform: scale(1.05);
     }
 
-    .action-buttons button i, 
-    .action-button button i {
-        font-size: 18px;
+    .action-buttons .btn i {
+        font-size: var(--icon-size-lg);
     }
 
-    /* Zoom controls for mobile */
-    #zoom-controls {
-        top: 10px;
-        right: 10px;
-        padding: 8px;
+    .zoom-controls {
+        top: var(--spacing-sm);
+        right: var(--spacing-sm);
+        padding: var(--spacing-sm);
         background-color: rgba(255, 255, 255, 0.95);
-        border-radius: 20px;
+        border-radius: var(--radius-xl);
     }
 
-    .zoom-control-btn {
+    .zoom-controls__btn {
         width: 36px;
         height: 36px;
     }
 
-    .app-header h1 {
-        font-size: clamp(0.9rem, 4vw, 1.2rem);
-        padding: 0 10px;
+    .app-header__title {
+        font-size: clamp(var(--font-size-sm), 4vw, var(--font-size-lg));
+        padding: 0 var(--spacing-sm);
+    }
+
+    .theme-selector__popup {
+        top: calc(100% + 5px);
+        right: -5px;
+        width: 36px;
+        padding: var(--spacing-xs);
+    }
+    
+    .app-header {
+        flex-direction: column;
+        gap: var(--spacing-sm);
     }
 }
 
-/* Ensure proper desktop view */
+/* Large screens (desktops) */
 @media (min-width: 769px) {
-    .container {
+    .app-container {
         display: flex;
-        flex-direction: row; /* Side-by-side for desktop */
+        flex-direction: row;
     }
     
-    .editor-panel, .preview-panel {
-        flex: 1; /* Equal width columns */
-        min-height: 600px;
-        overflow: hidden; /* No scroll for desktop */
+    .panel {
+        flex: 1;
+        min-height: calc(100vh - 200px); /* Dynamic height based on viewport */
+        overflow: hidden;
     }
     
-    #mermaidOutput svg {
-        max-width: 100%; /* Maintain width constraint for desktop */
-        transform: none; /* No scaling for desktop */
+    .output-display__svg {
+        max-width: 100%;
+        transform: none;
     }
     
-    .input-container, .output-container {
-        height: 600px; /* Fixed height for desktop */
+    .content-container {
+        height: 100%; /* Use full available panel height */
     }
     
-    #mermaidInput, #mermaidOutput {
+    .input-textarea,
+    .output-display {
         height: 100%;
-        min-height: 580px;
+        min-height: calc(100vh - 220px); /* Dynamic minimum height */
     }
     
-    /* Ensure editor has enough space */
-    .input-container, .output-container {
-        height: calc(100% - 5px); /* Consistent height for desktop */
+    .content-container {
+        height: calc(100% - 5px);
     }
 }
 
-/* Added scroll indicator styles */
-.scroll-indicator {
-    display: none;
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: var(--primary);
-    animation: bounce 1.5s infinite;
-    z-index: 100;
-    font-size: 24px;
-    background-color: rgba(255, 255, 255, 0.7);
-    padding: 5px 10px;
-    border-radius: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    opacity: 0.7;
-    pointer-events: none; /* Don't interfere with scrolling */
+/* =============================================================================
+   9. UTILITY CLASSES
+   ============================================================================= */
+
+/**
+ * Utility classes for common styling needs
+ */
+
+/* Display utilities */
+.u-hidden { display: none !important; }
+.u-visible { display: block !important; }
+.u-flex { display: flex !important; }
+.u-inline-flex { display: inline-flex !important; }
+
+/* Spacing utilities */
+.u-m-0 { margin: 0 !important; }
+.u-p-0 { padding: 0 !important; }
+.u-mb-sm { margin-bottom: var(--spacing-sm) !important; }
+.u-mb-base { margin-bottom: var(--spacing-base) !important; }
+.u-mb-lg { margin-bottom: var(--spacing-lg) !important; }
+
+/* Text utilities */
+.u-text-center { text-align: center !important; }
+.u-text-left { text-align: left !important; }
+.u-text-right { text-align: right !important; }
+.u-text-primary { color: var(--color-text-primary) !important; }
+.u-text-secondary { color: var(--color-text-secondary) !important; }
+.u-text-muted { color: var(--color-text-muted) !important; }
+
+/* Background utilities */
+.u-bg-white { background-color: var(--color-background-secondary) !important; }
+.u-bg-gray { background-color: var(--color-background-primary) !important; }
+
+/* Border utilities */
+.u-border { border: 1px solid var(--color-border-light) !important; }
+.u-border-0 { border: none !important; }
+.u-rounded { border-radius: var(--radius-base) !important; }
+.u-rounded-full { border-radius: var(--radius-full) !important; }
+
+/* Position utilities */
+.u-relative { position: relative !important; }
+.u-absolute { position: absolute !important; }
+.u-fixed { position: fixed !important; }
+
+/* =============================================================================
+   10. PRINT STYLES
+   ============================================================================= */
+
+/**
+ * Print-optimized styles for diagram export
+ */
+@media print {
+    * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    body {
+        background: white;
+        color: black;
+        font-size: 12pt;
+        line-height: 1.4;
+    }
+
+    .app-header,
+    .app-footer,
+    .action-buttons,
+    .zoom-controls,
+    .btn {
+        display: none !important;
+    }
+
+    .app-container {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+
+    .panel {
+        page-break-inside: avoid;
+    }
+
+    .output-display {
+        border: 1px solid #ccc;
+        background: white !important;
+    }
+
+    .output-display__svg {
+        max-width: 100% !important;
+        height: auto !important;
+    }
 }
+
+/* =============================================================================
+   ANIMATION DEFINITIONS
+   ============================================================================= */
+
+/**
+ * Keyframe animations for enhanced user experience
+ */
 
 @keyframes bounce {
     0%, 20%, 50%, 80%, 100% {
@@ -700,102 +1142,482 @@ footer {
     }
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        visibility: visible;
+    }
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =============================================================================
+   SCROLL INDICATOR (MOBILE)
+   ============================================================================= */
+
+/**
+ * Mobile scroll indicator for better UX
+ */
+.scroll-indicator {
+    display: none;
+    position: absolute;
+    bottom: var(--spacing-sm);
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--color-primary);
+    animation: bounce 1.5s infinite;
+    z-index: var(--z-sticky);
+    font-size: var(--icon-size-lg);
+    background-color: var(--color-background-overlay);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xs);
+    opacity: 0.7;
+    pointer-events: none;
+}
+
 @media (max-width: 768px) {
     .scroll-indicator {
         display: block;
     }
     
-    /* Show for 5 seconds then fade out */
-    .scroll-indicator.fade {
+    .scroll-indicator--fade {
         animation: fadeOut 1s forwards;
     }
-    
-    @keyframes fadeOut {
-        to {
-            opacity: 0;
-            visibility: hidden;
-        }
-    }
 }
 
-/* Ensure buttons are always visible */
-.action-button button, 
-.action-buttons button {
-    opacity: 1;
-    visibility: visible;
+/* =============================================================================
+   BACKWARD COMPATIBILITY
+   ============================================================================= */
+
+/**
+ * Legacy class names maintained for backward compatibility
+ * These duplicate the component styles to ensure existing HTML continues to work
+ */
+
+/* Container mappings */
+.container {
+    display: flex;
+    gap: var(--spacing-lg);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    flex: 1;
+    width: 100%;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-base);
+    background-color: var(--color-background-secondary);
 }
 
-/* Very small screens */
-@media (max-width: 480px) {
-    .app-header h1 {
-        font-size: 0.9rem;
-        padding: 0 5px;
-    }
-    
-    .editor-panel, .preview-panel {
-        height: 65vh; /* Slightly reduced from mobile but still substantial */
-        min-height: 350px; /* Increased from 250px to 350px */
-    }
-    
-    button[data-tooltip]::after {
-        display: none; /* Hide tooltips on very small screens */
-    }
-    
-    footer {
-        font-size: 0.7rem;
-        padding: 8px 10px;
-    }
-    
-    /* Hide theme selector on very small screens to save space */
-    #theme-selector-btn {
-        display: none;
-    }
-}
-
-/* Theme Styles - Applied only to Mermaid output */
-/* All themes use white background for diagrams */
-
-/* Default theme uses Mermaid's default styling with white background */
-#mermaidOutput.theme-default {
-    background-color: #ffffff !important;
-}
-
-#mermaidOutput.theme-default svg {
-    background-color: #ffffff !important;
-}
-
-/* Dark/Black and White theme */
-#mermaidOutput.theme-dark {
-    background-color: #ffffff !important;
-}
-
-#mermaidOutput.theme-dark svg {
-    background-color: #ffffff !important;
-}
-
-/* Custom Blue-Orange theme */
-#mermaidOutput.theme-custom {
-    background-color: #ffffff !important;
-    border: 2px solid #f97316;
-    border-radius: var(--radius-md);
-    padding: 1rem;
-}
-
-#mermaidOutput.theme-custom svg {
-    background-color: #ffffff !important;
-}
-
-/* Responsive theme adjustments */
+/* Ensure container is responsive on mobile */
 @media (max-width: 768px) {
-    .theme-options-popup {
-        top: calc(100% + 5px);
-        right: -5px; /* Smaller offset for narrow popup */
-        width: 36px; /* Slightly smaller on mobile */
-        padding: 0.4rem;
-    }
-    
-    .app-header {
+    .container {
         flex-direction: column;
-        gap: 0.5rem;
+        max-width: 100%;
+        margin: 0;
+        border-radius: 0;
+        padding: var(--spacing-sm);
+        gap: var(--spacing-sm);
     }
+}
+
+.editor-panel,
+.preview-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex: 1;
+    padding: var(--spacing-lg);
+    background-color: var(--color-background-secondary);
+    overflow: hidden;
+    min-height: var(--panel-min-height);
+}
+
+/* Mobile responsive for panels */
+@media (max-width: 768px) {
+    .editor-panel,
+    .preview-panel {
+        flex: none;
+        min-height: calc(45vh - 60px);
+        max-height: calc(50vh);
+        padding: var(--spacing-sm);
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .editor-panel,
+    .preview-panel {
+        min-height: calc(40vh - 40px);
+        max-height: calc(45vh);
+        padding: var(--spacing-xs);
+    }
+}
+
+.input-container,
+.output-container {
+    position: relative;
+    width: 100%;
+    height: 100%; /* Use full available height */
+    border-radius: var(--radius-base);
+    overflow: hidden;
+    flex: 1; /* Allow container to grow */
+}
+
+/* Input/Output mappings */
+#mermaidInput {
+    width: 100%;
+    height: 100%;
+    padding: var(--spacing-base);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-base);
+    background-color: var(--color-background-tertiary);
+    resize: none;
+    font-family: var(--font-family-code);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-base);
+    min-height: 300px; /* Reasonable minimum height */
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+#mermaidInput:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+#mermaidOutput {
+    width: 100%;
+    height: 100%;
+    padding: var(--spacing-base);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-base);
+    background-color: var(--color-background-secondary);
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: box-shadow var(--transition-base);
+}
+
+#mermaidOutput:hover {
+    box-shadow: var(--shadow-xs);
+}
+
+#mermaidOutput svg {
+    width: auto !important;
+    height: auto !important;
+    margin: 0 auto;
+    display: block;
+    max-width: 100%;
+    background-color: var(--color-background-secondary) !important;
+}
+
+/* Button mappings */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-sm) var(--spacing-base);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    position: relative;
+    outline: none;
+    background-color: var(--color-background-overlay);
+    color: var(--color-primary);
+    border: 1px solid var(--color-border-light);
+}
+
+.button:hover {
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+    border-color: var(--color-primary);
+}
+
+.action-button,
+.export-buttons {
+    position: absolute;
+    bottom: var(--spacing-sm);
+    right: var(--spacing-sm);
+    display: flex;
+    gap: var(--spacing-sm);
+    background-color: var(--color-background-overlay);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-xs);
+    box-shadow: var(--shadow-sm);
+    align-items: center;
+    z-index: var(--z-fixed);
+}
+
+.copy-btn {
+    background: none;
+    color: var(--color-primary);
+    padding: var(--spacing-xs);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    position: relative;
+    outline: none;
+}
+
+.copy-btn:hover {
+    color: var(--color-primary-hover);
+    background-color: var(--color-primary-light);
+}
+
+.use-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-sm) var(--spacing-base);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    position: relative;
+    outline: none;
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+}
+
+.use-btn:hover {
+    background-color: var(--color-primary-hover);
+    transform: translateY(-1px);
+}
+
+/* Modal mappings */
+.info-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 600px;
+    background-color: var(--color-background-secondary);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-base);
+    box-shadow: var(--shadow-lg);
+    z-index: var(--z-modal);
+    padding: var(--spacing-base);
+    display: none;
+    flex-direction: column;
+    gap: var(--spacing-base);
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+.info-popup.active {
+    display: flex;
+}
+
+.info-popup .close-btn {
+    align-self: flex-end;
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-base);
+    cursor: pointer;
+    transition: background-color var(--transition-base);
+}
+
+.info-popup .close-btn:hover {
+    background-color: var(--color-primary-hover);
+}
+
+/* Theme mappings */
+.theme-options-popup {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    background: var(--color-background-secondary);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-base);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--color-border-light);
+    width: 40px;
+    transition: all var(--transition-base);
+    z-index: var(--z-dropdown);
+}
+
+.theme-options-popup.hidden {
+    display: none;
+}
+
+.theme-option {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all var(--transition-base);
+    position: relative;
+}
+
+.theme-option:hover {
+    transform: scale(1.05);
+    border-color: var(--color-primary);
+}
+
+.theme-option.active {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+.theme-option::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: var(--radius-full);
+    background: var(--color-background-overlay);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.theme-option.active::after {
+    opacity: 1;
+}
+
+/* Zoom control mappings */
+#zoom-controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--color-background-overlay);
+    padding: var(--spacing-xs);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-xs);
+    z-index: var(--z-sticky);
+    display: flex;
+    gap: var(--spacing-xs);
+}
+
+.zoom-control-btn {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-background-secondary);
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-base);
+    padding: 0;
+}
+
+.zoom-control-btn:hover,
+.zoom-control-btn.active {
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+}
+
+.zoom-control-btn i {
+    font-size: 14px;
+}
+
+/* Example code mappings */
+.snippet {
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-base);
+    overflow: hidden;
+    background-color: var(--color-background-tertiary);
+}
+
+.snippet-header {
+    padding: var(--spacing-sm) var(--spacing-base);
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.code-container {
+    position: relative;
+    background-color: var(--color-background-tertiary);
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-base);
+    background-color: var(--color-background-primary);
+    border-bottom: 1px solid var(--color-border-light);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+}
+
+.code-block {
+    margin: 0;
+    padding: var(--spacing-base);
+    background-color: var(--color-background-tertiary);
+    overflow-x: auto;
+    font-family: var(--font-family-code);
+}
+
+.example-code {
+    display: block;
+    white-space: pre;
+    color: var(--color-text-primary);
+}
+
+/* Footer mapping */
+footer {
+    text-align: center;
+    padding: var(--spacing-base) 0;
+    background-color: var(--color-background-secondary);
+    border-top: 1px solid var(--color-border-light);
+    margin-top: var(--spacing-base);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
 }

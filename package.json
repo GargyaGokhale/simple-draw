@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "A web-based diagram creation tool using Mermaid.js",
   "main": "index.html",
+  "type": "module",
   "scripts": {
-    "start": "http-server"
+    "start": "http-server",
+    "test": "node src/js/utils/tests/sanitizer.test.js"
   },
   "dependencies": {
-    "mermaid": "10.6.1",
+    "mermaid": "11.9.0",
     "html2canvas": "1.4.1"
   },
   "devDependencies": {
