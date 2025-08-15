@@ -60,7 +60,7 @@ export function sanitizeInput(input) {
 /**
  * Sanitizes input specifically for Mermaid diagram content.
  * This is a specialized version that preserves Mermaid syntax while
- * still protecting against XSS attacks.
+ * still protecting against XSS attacks and handles sequence diagram formatting.
  * 
  * @function sanitizeMermaidInput
  * @param {string} input - The raw Mermaid diagram code to be sanitized
@@ -85,17 +85,25 @@ export function sanitizeMermaidInput(input) {
         throw new TypeError(`Expected string input, received ${typeof input}`);
     }
     
-    // For Mermaid, we need to be more selective about what we escape
-    // to preserve diagram syntax while still preventing XSS
+    // First, sanitize dangerous characters
     const mermaidSafeEntityMap = {
         '<': '&lt;',
-        '&': '&amp;',
-        '"': '&quot;'
+        '&': '&amp;'
     };
     
-    return input.replace(/[<>&"]/g, (char) => {
+    let sanitized = input.replace(/[<>&]/g, (char) => {
         return mermaidSafeEntityMap[char] || char;
     });
+    
+    // Handle sequence diagram message formatting
+    // Remove quotes from sequence diagram messages but preserve quotes in participant definitions
+    if (sanitized.includes('sequenceDiagram')) {
+        // Pattern to match sequence diagram arrows with quoted messages
+        // Matches: participant->>participant: "message" or participant-->>participant: "message"
+        sanitized = sanitized.replace(/([-\w]+(?:--)?>>[-\w]+):\s*"([^"]+)"/g, '$1: $2');
+    }
+    
+    return sanitized;
 }
 
 /**

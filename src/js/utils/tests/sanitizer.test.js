@@ -61,14 +61,25 @@ console.groupEnd();
  */
 console.group('🧪 Testing sanitizeMermaidInput function');
 
-// Test Mermaid-specific sanitization
+// Test Mermaid-specific sanitization - preserves quotes for Mermaid syntax
 try {
     const result = sanitizeMermaidInput('graph TD\n  A["User & Admin"] --> B');
-    const expected = 'graph TD\n  A[&quot;User &amp; Admin&quot;] --> B';
+    const expected = 'graph TD\n  A["User &amp; Admin"] --> B';
     console.assert(result === expected, 'Failed: Mermaid sanitization');
     console.log('✅ Mermaid sanitization test passed');
 } catch (error) {
     console.error('❌ Mermaid sanitization test failed:', error);
+}
+
+// Test sequence diagram with quotes (your specific use case)
+try {
+    const input = 'sequenceDiagram\n    participant U as "User Interface"\n    U->>A: "Send Request"\n    A->>D: "Query Data"';
+    const result = sanitizeMermaidInput(input);
+    const expected = 'sequenceDiagram\n    participant U as "User Interface"\n    U->>A: Send Request\n    A->>D: Query Data';
+    console.assert(result === expected, `Failed: Sequence diagram with quotes\nExpected: ${expected}\nGot: ${result}`);
+    console.log('✅ Sequence diagram with quotes test passed');
+} catch (error) {
+    console.error('❌ Sequence diagram with quotes test failed:', error);
 }
 
 console.groupEnd();
