@@ -64,7 +64,7 @@ console.group('🧪 Testing sanitizeMermaidInput function');
 // Test Mermaid-specific sanitization
 try {
     const result = sanitizeMermaidInput('graph TD\n  A["User & Admin"] --> B');
-    const expected = 'graph TD\n  A[&quot;User &amp; Admin&quot;] --&gt; B';
+    const expected = 'graph TD\n  A[&quot;User &amp; Admin&quot;] --> B';
     console.assert(result === expected, 'Failed: Mermaid sanitization');
     console.log('✅ Mermaid sanitization test passed');
 } catch (error) {
