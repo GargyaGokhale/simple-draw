@@ -157,9 +157,9 @@ body {
 
     /* Layout Dimensions */
     --container-max-width: 1400px;
-    --panel-min-height: 600px;
-    --mobile-panel-height: 400px;
-    --input-min-height: 580px;
+    --panel-min-height: calc(100vh - 200px); /* Dynamic height based on viewport */
+    --mobile-panel-height: calc(100vh - 300px);
+    --input-min-height: calc(100vh - 220px); /* Dynamic height for inputs */
 
     /* Animation & Transitions */
     --transition-fast: 0.15s ease;
@@ -269,9 +269,10 @@ code, pre {
 .content-container {
     position: relative;
     width: 100%;
-    height: var(--panel-min-height);
+    height: 100%; /* Use full available height */
     border-radius: var(--radius-base);
     overflow: hidden;
+    flex: 1; /* Allow container to grow */
 }
 
 /* =============================================================================
@@ -339,7 +340,7 @@ code, pre {
     font-size: var(--font-size-sm);
     color: var(--color-text-primary);
     line-height: var(--line-height-base);
-    min-height: var(--input-min-height);
+    min-height: 300px; /* Reasonable minimum height */
     transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
@@ -819,15 +820,43 @@ code, pre {
 
 /* Small screens (phones) */
 @media (max-width: 480px) {
+    body {
+        padding: var(--spacing-xs);
+    }
+    
     .app-header__title {
         font-size: var(--font-size-sm);
         padding: 0 var(--spacing-xs);
     }
     
-    .panel {
-        height: 65vh;
-        min-height: 350px;
-        padding: var(--spacing-sm);
+    .container,
+    .app-container {
+        padding: var(--spacing-xs);
+        gap: var(--spacing-xs);
+    }
+    
+    .panel,
+    .editor-panel, 
+    .preview-panel {
+        min-height: calc(40vh - 40px); /* Smaller panels for phones */
+        max-height: calc(45vh);
+        padding: var(--spacing-xs);
+    }
+    
+    .content-container,
+    .input-container,
+    .output-container {
+        height: calc(40vh - 60px);
+        min-height: calc(40vh - 60px);
+    }
+    
+    .input-textarea,
+    .output-display,
+    #mermaidInput,
+    #mermaidOutput {
+        min-height: calc(40vh - 100px);
+        padding: var(--spacing-xs);
+        font-size: var(--font-size-xs);
     }
     
     .tooltip[data-tooltip]::after {
@@ -849,32 +878,47 @@ code, pre {
     body {
         overflow-y: auto;
         height: auto;
-        padding: 0;
+        padding: var(--spacing-sm);
+        min-height: 100vh;
     }
     
+    .container,
     .app-container {
         flex-direction: column;
         height: auto;
         overflow: visible;
         padding: var(--spacing-sm);
         gap: var(--spacing-sm);
+        max-width: 100%;
+        margin: 0;
+        border-radius: 0;
     }
 
-    .panel {
+    .panel,
+    .editor-panel,
+    .preview-panel {
         height: auto;
-        min-height: var(--mobile-panel-height);
+        min-height: calc(45vh - 60px); /* Each panel takes roughly 45% of viewport */
+        max-height: calc(50vh);
         padding: var(--spacing-sm);
+        width: 100%;
+        flex: none; /* Don't flex grow on mobile */
     }
 
-    .content-container {
-        height: var(--mobile-panel-height);
-        min-height: var(--mobile-panel-height);
+    .content-container,
+    .input-container,
+    .output-container {
+        height: calc(45vh - 80px);
+        min-height: calc(45vh - 80px);
+        max-height: calc(45vh - 40px);
     }
 
     .input-textarea,
-    .output-display {
+    .output-display,
+    #mermaidInput,
+    #mermaidOutput {
         height: 100%;
-        min-height: 380px;
+        min-height: calc(45vh - 120px); /* Ensure proper mobile sizing */
         font-size: var(--font-size-sm);
         padding: var(--spacing-sm);
     }
@@ -962,7 +1006,7 @@ code, pre {
     
     .panel {
         flex: 1;
-        min-height: var(--panel-min-height);
+        min-height: calc(100vh - 200px); /* Dynamic height based on viewport */
         overflow: hidden;
     }
     
@@ -972,13 +1016,13 @@ code, pre {
     }
     
     .content-container {
-        height: var(--panel-min-height);
+        height: 100%; /* Use full available panel height */
     }
     
     .input-textarea,
     .output-display {
         height: 100%;
-        min-height: var(--input-min-height);
+        min-height: calc(100vh - 220px); /* Dynamic minimum height */
     }
     
     .content-container {
@@ -1189,6 +1233,18 @@ code, pre {
     background-color: var(--color-background-secondary);
 }
 
+/* Ensure container is responsive on mobile */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        max-width: 100%;
+        margin: 0;
+        border-radius: 0;
+        padding: var(--spacing-sm);
+        gap: var(--spacing-sm);
+    }
+}
+
 .editor-panel,
 .preview-panel {
     position: relative;
@@ -1202,13 +1258,35 @@ code, pre {
     min-height: var(--panel-min-height);
 }
 
+/* Mobile responsive for panels */
+@media (max-width: 768px) {
+    .editor-panel,
+    .preview-panel {
+        flex: none;
+        min-height: calc(45vh - 60px);
+        max-height: calc(50vh);
+        padding: var(--spacing-sm);
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .editor-panel,
+    .preview-panel {
+        min-height: calc(40vh - 40px);
+        max-height: calc(45vh);
+        padding: var(--spacing-xs);
+    }
+}
+
 .input-container,
 .output-container {
     position: relative;
     width: 100%;
-    height: var(--panel-min-height);
+    height: 100%; /* Use full available height */
     border-radius: var(--radius-base);
     overflow: hidden;
+    flex: 1; /* Allow container to grow */
 }
 
 /* Input/Output mappings */
@@ -1224,7 +1302,7 @@ code, pre {
     font-size: var(--font-size-sm);
     color: var(--color-text-primary);
     line-height: var(--line-height-base);
-    min-height: var(--input-min-height);
+    min-height: 300px; /* Reasonable minimum height */
     transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
