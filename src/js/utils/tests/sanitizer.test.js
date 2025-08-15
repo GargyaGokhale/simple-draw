@@ -61,14 +61,36 @@ console.groupEnd();
  */
 console.group('🧪 Testing sanitizeMermaidInput function');
 
-// Test Mermaid-specific sanitization
+// Test Mermaid-specific sanitization - preserves ampersands for proper parsing
 try {
     const result = sanitizeMermaidInput('graph TD\n  A["User & Admin"] --> B');
-    const expected = 'graph TD\n  A[&quot;User &amp; Admin&quot;] --> B';
+    const expected = 'graph TD\n  A["User & Admin"] --> B';
     console.assert(result === expected, 'Failed: Mermaid sanitization');
     console.log('✅ Mermaid sanitization test passed');
 } catch (error) {
     console.error('❌ Mermaid sanitization test failed:', error);
+}
+
+// Test the specific sequence diagram issue
+try {
+    const input = 'sequenceDiagram\n    participant Dev as MacBook\n    participant K8s as K3s Cluster\n    \n    K8s->>K8s: Pull image & create pods\n    Dev->>K8s: kubectl/dashboard access';
+    const result = sanitizeMermaidInput(input);
+    const expected = 'sequenceDiagram\n    participant Dev as MacBook\n    participant K8s as K3s Cluster\n    \n    K8s->>K8s: Pull image & create pods\n    Dev->>K8s: kubectl/dashboard access';
+    console.assert(result === expected, `Failed: Sequence diagram with ampersand\nExpected: ${expected}\nGot: ${result}`);
+    console.log('✅ Sequence diagram with ampersand test passed');
+} catch (error) {
+    console.error('❌ Sequence diagram with ampersand test failed:', error);
+}
+
+// Test sequence diagram with quotes (your specific use case)
+try {
+    const input = 'sequenceDiagram\n    participant U as "User Interface"\n    U->>A: "Send Request"\n    A->>D: "Query Data"';
+    const result = sanitizeMermaidInput(input);
+    const expected = 'sequenceDiagram\n    participant U as "User Interface"\n    U->>A: Send Request\n    A->>D: Query Data';
+    console.assert(result === expected, `Failed: Sequence diagram with quotes\nExpected: ${expected}\nGot: ${result}`);
+    console.log('✅ Sequence diagram with quotes test passed');
+} catch (error) {
+    console.error('❌ Sequence diagram with quotes test failed:', error);
 }
 
 console.groupEnd();
