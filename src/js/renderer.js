@@ -1,4 +1,20 @@
+import { sanitizeMermaidInput } from './utils/sanitizer.js';
+
+/**
+ * Renderer class manages the diagram rendering, zoom, pan, and display functionality.
+ * Handles Mermaid diagram rendering, user interactions, and visual controls.
+ * 
+ * @class Renderer
+ * @author Gargya Gokhale
+ * @version 1.0.0
+ */
 export class Renderer {
+    /**
+     * Creates an instance of Renderer.
+     * Initializes Mermaid configuration, zoom/pan controls, and event listeners.
+     * 
+     * @constructor
+     */
     constructor() {
         this.outputDiv = document.getElementById('mermaidOutput');
         // Initialize Mermaid with safe configuration
@@ -30,12 +46,25 @@ export class Renderer {
         });
     }
 
+    /**
+     * Sets up event listeners for diagram rendering.
+     * Listens for 'diagram-update' custom events to trigger rendering.
+     */
     setupEventListeners() {
         document.addEventListener('diagram-update', (event) => {
             this.renderDiagram(event.detail.content);
         });
     }
 
+    /**
+     * Renders a Mermaid diagram from the provided content.
+     * Handles sanitization, rendering, error handling, and post-render setup.
+     * 
+     * @async
+     * @param {string} content - The Mermaid diagram code to render
+     * @returns {Promise<void>} Promise that resolves when rendering is complete
+     * @throws {Error} If rendering fails due to invalid syntax or other issues
+     */
     async renderDiagram(content) {
         if (!content || content.trim() === '') {
             this.outputDiv.innerHTML = '<p style="color: orange;">Enter diagram code and click render</p>';
@@ -54,8 +83,8 @@ export class Renderer {
             // Generate unique ID for the diagram
             const id = `mermaid-diagram-${Date.now()}`;
             
-            // Render the diagram
-            const sanitizedContent = this.sanitizeInput(content);
+            // Render the diagram using the centralized sanitizer
+            const sanitizedContent = sanitizeMermaidInput(content);
             console.log('Sanitized content for rendering:', sanitizedContent);
             const { svg } = await window.mermaid.render(id, sanitizedContent);
             this.outputDiv.innerHTML = svg;
@@ -84,17 +113,6 @@ export class Renderer {
             
             this.outputDiv.innerHTML = `<p style="color: red;">Error rendering diagram: ${error.message || 'Please check your syntax and try again.'}</p>`;
         }
-    }
-    
-    sanitizeInput(input) {
-        return input.replace(/[<>&"]/g, (char) => {
-            switch (char) {
-                case '<': return '&lt;';
-                case '&': return '&amp;';
-                case '"': return '&quot;';
-                default: return char;
-            }
-        });
     }
 
     addZoomControlsToDOM() {

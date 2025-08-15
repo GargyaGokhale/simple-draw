@@ -1,4 +1,5 @@
 import { loadExamples } from './loadExamples.js';
+import { sanitizeInput } from './utils/sanitizer.js';
 
 /**
  * Editor class manages the diagram input interface and related functionality.
@@ -330,20 +331,5 @@ export class Editor {
     createInfoPopup() {
         console.warn('createInfoPopup is deprecated. Use _createInfoPopup instead.');
         return this._createInfoPopup();
-    }
-
-    /**
-     * @deprecated This method is no longer needed as sanitization is handled in renderer. Will be removed in v2.0.
-     */
-    sanitizeInput(input) {
-        console.warn('sanitizeInput is deprecated and no longer needed. Sanitization is handled in renderer.');
-        return input.replace(/[<>&"]/g, (char) => {
-            switch (char) {
-                case '<': return '&lt;';
-                case '&': return '&amp;';
-                case '"': return '&quot;';
-                default: return char;
-            }
-        });
     }
 }
